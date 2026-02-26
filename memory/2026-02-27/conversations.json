@@ -1,0 +1,45 @@
+{
+  "date": "2026-02-27",
+  "messages": [
+    {
+      "role": "user",
+      "content": "hello",
+      "timestamp": "2026-02-27T03:52:37.740206"
+    },
+    {
+      "role": "assistant",
+      "content": "Hello! Welcome to our university. I'm your AI receptionist, and I'd be happy to help you with any questions you have.\n\nWhether you're interested in admissions, tuition, academic programs, or campus information, just let me know. How can I assist you today?",
+      "timestamp": "2026-02-27T03:52:37.740206"
+    },
+    {
+      "role": "user",
+      "content": "hiii",
+      "timestamp": "2026-02-27T04:21:29.047711"
+    },
+    {
+      "role": "assistant",
+      "content": "Hello again! It's great to see you. 😊\n\nIs there anything specific about our university you'd like to know? I can help with admissions, tuition, academic programs, or campus details. How can I assist you today?",
+      "timestamp": "2026-02-27T04:21:29.047711"
+    },
+    {
+      "role": "user",
+      "content": "What are the tuition fees and financial aid options?",
+      "timestamp": "2026-02-27T04:27:33.532079"
+    },
+    {
+      "role": "assistant",
+      "content": "That is a very important question! Tuition fees vary depending on your specific program of study and residency status (in-state vs. out-of-state).\n\nFor the most accurate and up-to-date figures, I recommend visiting our **Financial Aid and Bursar's Office website**. There, you can find detailed fee schedules for each department.\n\nRegarding financial aid, we typically offer a range of options including:\n*   Merit-based scholarships\n*   Need-based grants\n*   Federal student loans\n*   Work-study programs\n\nWould you like me to provide you with the direct link to the financial aid application page, or do you have questions about eligibility requirements?",
+      "timestamp": "2026-02-27T04:27:33.532079"
+    },
+    {
+      "role": "user",
+      "content": "hello what can you do?",
+      "timestamp": "2026-02-27T04:59:35.273525"
+    },
+    {
+      "role": "assistant",
+      "content": "Hello! I'm your AI receptionist, and I'm here to make your university experience easier. I can assist you with:\n\n*   **Admissions:** Application processes and requirements.\n*   **Tuition & Financial Aid:** Fee structures and scholarship options.\n*   **Academic Programs:** Majors, minors, and course details.\n*   **Campus Information:** Location, hours of operation, and facilities.\n*   **FAQs:** Answers to common questions.\n\nIf you have a specific question, just let me know! Is there anything particular you'd like to explore today?",
+      "timestamp": "2026-02-27T04:59:35.273525"
+    }
+  ]
+}
