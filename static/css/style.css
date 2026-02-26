@@ -518,6 +518,126 @@ body {
     box-shadow: var(--shadow-sm);
 }
 
+/* Markdown Content Styles */
+.markdown-content {
+    line-height: 1.7;
+}
+
+.markdown-content p {
+    margin-bottom: var(--spacing-md);
+    color: hsl(var(--foreground));
+}
+
+.markdown-content p:last-child {
+    margin-bottom: 0;
+}
+
+.markdown-content strong {
+    color: hsl(var(--primary));
+    font-weight: 600;
+}
+
+.markdown-content em {
+    color: hsl(var(--muted-foreground));
+    font-style: italic;
+}
+
+.markdown-content ul,
+.markdown-content ol {
+    margin: var(--spacing-sm) 0;
+    padding-left: var(--spacing-lg);
+}
+
+.markdown-content li {
+    margin-bottom: var(--spacing-xs);
+    color: hsl(var(--foreground));
+}
+
+.markdown-content h1,
+.markdown-content h2,
+.markdown-content h3,
+.markdown-content h4 {
+    color: hsl(var(--foreground));
+    margin: var(--spacing-md) 0 var(--spacing-sm);
+    font-weight: 600;
+}
+
+.markdown-content code {
+    background: hsl(var(--secondary));
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-family: 'Fira Code', monospace;
+    font-size: 0.9em;
+}
+
+.markdown-content pre {
+    background: hsl(var(--secondary));
+    padding: var(--spacing-md);
+    border-radius: var(--radius);
+    overflow-x: auto;
+    margin: var(--spacing-sm) 0;
+}
+
+.markdown-content pre code {
+    background: none;
+    padding: 0;
+}
+
+.markdown-content a {
+    color: hsl(var(--primary));
+    text-decoration: underline;
+}
+
+.markdown-content a:hover {
+    color: hsl(183 100% 45%);
+}
+
+.markdown-content blockquote {
+    border-left: 3px solid hsl(var(--primary));
+    padding-left: var(--spacing-md);
+    margin: var(--spacing-sm) 0;
+    color: hsl(var(--muted-foreground));
+    font-style: italic;
+}
+
+/* Tables */
+.markdown-content table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: var(--spacing-md) 0;
+    font-size: 0.9em;
+}
+
+.markdown-content th,
+.markdown-content td {
+    padding: var(--spacing-sm) var(--spacing-md);
+    border: 1px solid hsl(var(--border));
+    text-align: left;
+}
+
+.markdown-content th {
+    background: hsl(var(--secondary));
+    font-weight: 600;
+    color: hsl(var(--foreground));
+}
+
+.markdown-content tr:nth-child(even) {
+    background: hsl(var(--secondary) / 0.3);
+}
+
+/* Horizontal Rule */
+.markdown-content hr {
+    border: none;
+    border-top: 1px solid hsl(var(--border));
+    margin: var(--spacing-md) 0;
+}
+
+/* Task Lists (checkboxes) */
+.markdown-content input[type="checkbox"] {
+    margin-right: var(--spacing-sm);
+    accent-color: hsl(var(--primary));
+}
+
 .user-message .message-content {
     background: linear-gradient(135deg, hsl(var(--secondary)) 0%, hsl(215 25% 22%) 100%);
     border-color: hsl(var(--primary) / 0.3);

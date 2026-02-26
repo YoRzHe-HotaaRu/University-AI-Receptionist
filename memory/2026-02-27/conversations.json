@@ -40,6 +40,96 @@
       "role": "assistant",
       "content": "Hello! I'm your AI receptionist, and I'm here to make your university experience easier. I can assist you with:\n\n*   **Admissions:** Application processes and requirements.\n*   **Tuition & Financial Aid:** Fee structures and scholarship options.\n*   **Academic Programs:** Majors, minors, and course details.\n*   **Campus Information:** Location, hours of operation, and facilities.\n*   **FAQs:** Answers to common questions.\n\nIf you have a specific question, just let me know! Is there anything particular you'd like to explore today?",
       "timestamp": "2026-02-27T04:59:35.273525"
+    },
+    {
+      "role": "user",
+      "content": "hello",
+      "timestamp": "2026-02-27T05:05:33.900604"
+    },
+    {
+      "role": "assistant",
+      "content": "Hello again! It's great to see you.\n\nIs there anything specific you'd like to explore today, or perhaps you have a new question about campus life or academics? I'm here to help!",
+      "timestamp": "2026-02-27T05:05:33.900604"
+    },
+    {
+      "role": "user",
+      "content": "what can you do?",
+      "timestamp": "2026-02-27T05:05:51.439401"
+    },
+    {
+      "role": "assistant",
+      "content": "Hello! As your AI receptionist, I'm here to help you navigate university information. I can assist you with:\n\n*   **Admissions:** Application steps and requirements.\n*   **Tuition & Financial Aid:** Fee structures and scholarship options.\n*   **Academic Programs:** Majors, minors, and course details.\n*   **Campus Information:** Location, hours of operation, and facilities.\n*   **FAQs:** Answers to common questions.\n\nIf you're not sure where to start, just let me know what you're curious about!",
+      "timestamp": "2026-02-27T05:05:51.439401"
+    },
+    {
+      "role": "user",
+      "content": "hello",
+      "timestamp": "2026-02-27T05:07:30.666432"
+    },
+    {
+      "role": "assistant",
+      "content": "Hello again! It's great to chat with you again. 😊\n\nWe've covered the basics earlier in our chat. Do you have a specific question about programs, campus life, or admissions today? I'm ready to help!",
+      "timestamp": "2026-02-27T05:07:30.666432"
+    },
+    {
+      "role": "user",
+      "content": "can you list out stuff you can do?",
+      "timestamp": "2026-02-27T05:07:52.409180"
+    },
+    {
+      "role": "assistant",
+      "content": "Of course! To recap, here are the key areas I can assist you with:\n\n*   **Admissions:** Application processes and requirements.\n*   **Tuition & Financial Aid:** Fee structures and scholarship options.\n*   **Academic Programs:** Majors, minors, and course details.\n*   **Campus Information:** Location, hours of operation, and facilities.\n*   **FAQs:** Answers to common questions.\n\nIf you need specific details on any of these topics, just let me know!",
+      "timestamp": "2026-02-27T05:07:52.409180"
+    },
+    {
+      "role": "user",
+      "content": "helloo",
+      "timestamp": "2026-02-27T05:24:54.397450"
+    },
+    {
+      "role": "assistant",
+      "content": "Hello there! 👋 It's wonderful to connect with you again.\n\nSince we've covered my capabilities earlier, is there something specific you'd like to dive into today? Whether it's a particular major, tuition details, or campus hours, feel free to ask!",
+      "timestamp": "2026-02-27T05:24:54.397450"
+    },
+    {
+      "role": "user",
+      "content": "What are the tuition fees and financial aid options?",
+      "timestamp": "2026-02-27T05:25:15.114464"
+    },
+    {
+      "role": "assistant",
+      "content": "That's a crucial question for planning your education!\n\nWhile I don't have access to the specific, real-time tuition figures or personalized financial aid packages, I can guide you to the exact sources for that information.\n\n*   **Tuition & Fees:** The most accurate and current rates are listed on our official website under the **'Cost of Attendance'** section.\n*   **Financial Aid:** For scholarships, grants, and loan options, the **Financial Aid Office** is the best resource. They can provide details specific to your situation.\n\nWould you like me to provide the direct contact information or links to the Financial Aid Office so you can get started?",
+      "timestamp": "2026-02-27T05:25:15.114464"
+    },
+    {
+      "role": "user",
+      "content": "what are the courses available? create a table for this",
+      "timestamp": "2026-02-27T05:27:00.889165"
+    },
+    {
+      "role": "assistant",
+      "content": "Hello there! 👋 That is a great question, and I want to make sure you get the most accurate information for your planning.\n\nI don't have access to the specific, real-time course catalog for every semester, as offerings change frequently. However, I can direct you to the exact resources where you will find the official, up-to-date list!\n\nHere is a breakdown of where to find the courses:\n\n| Resource | What It Contains | How to Access |\n| :--- | :--- | :--- |\n| **Official Course Catalog** | Full list of course codes, descriptions, and credits. | University Website > Registrar's Office |\n| **Department Pages** | Specific courses for majors (e.g., Engineering, Arts). | Website > Academics > Specific Department |\n| **Student Portal** | Real-time availability for registration. | Login via Student Dashboard |\n| **Academic Advisor** | Guidance on required courses for your major. | Book an appointment via Student Services |\n\nIf you have a specific field of interest (like Business, Science, or Arts), let me know! I can help you identify which department to check first. 😊",
+      "timestamp": "2026-02-27T05:27:00.889165"
+    },
+    {
+      "role": "user",
+      "content": "alrighty, can you give me a table of showing the available courses?",
+      "timestamp": "2026-02-27T05:30:52.312785"
+    },
+    {
+      "role": "assistant",
+      "content": "I appreciate your patience! I want to be completely transparent with you: **I do not have access to the real-time course catalog.**\n\nCourse availability changes every semester based on faculty schedules, department needs, and enrollment numbers. Creating a list that isn't live could lead to incorrect information regarding what is actually open for registration.\n\nTo get the accurate, up-to-date table of courses, here is the best process to follow:\n\n| Step | Action | Where to Look |\n| :--- | :--- | :--- |\n| **1** | **View the Catalog** | University Website > Registrar's Office > Course Catalog |\n| **2** | **Check Availability** | Student Portal > Registration > Current Semester Schedule |\n| **3** | **Verify Prerequisites** | Major Department Page or Academic Advisor |\n\nWould you like me to provide the direct link to the **Registrar's Office** website so you can access the official schedule? 😊",
+      "timestamp": "2026-02-27T05:30:52.312785"
+    },
+    {
+      "role": "user",
+      "content": "What is the academic calendar and class schedule?",
+      "timestamp": "2026-02-27T05:39:27.870545"
+    },
+    {
+      "role": "assistant",
+      "content": "Hello there! 👋 That's a fantastic question for planning your year.\n\nSince academic calendars and class schedules vary by term and major, I don't have the specific real-time dates in front of me. However, I can point you to the official sources where you'll find the exact schedule!\n\n| Information | Best Resource |\n| :--- | :--- |\n| **Academic Calendar** | Registrar's Office Website |\n| **Class Schedule** | Student Portal (Course Search) |\n| **Important Deadlines** | Academic Affairs Office |\n\nWould you like me to provide the direct contact details for the Registrar's Office so you can access the current semester's schedule? 😊",
+      "timestamp": "2026-02-27T05:39:27.870545"
     }
   ]
 }

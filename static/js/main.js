@@ -111,6 +111,155 @@
     }
 
     // =========================================================================
+    // Markdown Parser
+    // =========================================================================
+
+    /**
+     * Simple markdown parser
+     * @param {string} text - Markdown text
+     * @returns {string} HTML
+     */
+    function parseMarkdown(text) {
+        if (!text) return '';
+        
+        let html = text;
+        
+        // Code blocks (```code```)
+        html = html.replace(/```([\s\S]*?)```/g, '<pre><code>$1</code></pre>');
+        
+        // Inline code (`code`)
+        html = html.replace(/`([^`]+)`/g, '<code>$1</code>');
+        
+        // Bold (**text**)
+        html = html.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
+        
+        // Italic (*text*)
+        html = html.replace(/\*([^*]+)\*/g, '<em>$1</em>');
+        
+        // Strikethrough (~~text~~)
+        html = html.replace(/~~([^~]+)~~/g, '<del>$1</del>');
+        
+        // Headers
+        html = html.replace(/^### (.+)$/gm, '<h4>$1</h4>');
+        html = html.replace(/^## (.+)$/gm, '<h3>$1</h3>');
+        html = html.replace(/^# (.+)$/gm, '<h2>$1</h2>');
+        
+        // Blockquotes (> text)
+        html = html.replace(/^> (.+)$/gm, '<blockquote>$1</blockquote>');
+        
+        // Horizontal rule
+        html = html.replace(/^---$/gm, '<hr>');
+        
+        // Links [text](url)
+        html = html.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2" target="_blank">$1</a>');
+        
+        // Tables - handle markdown tables
+        const lines = html.split('\n');
+        let inTable = false;
+        let tableContent = [];
+        let newHtml = '';
+        
+        lines.forEach((line, index) => {
+            // Check if this is a table row
+            if (line.trim().startsWith('|') && line.includes('|')) {
+                const trimmedLine = line.trim();
+                
+                // Check if this is a separator row (contains only -, :, |, and spaces)
+                const isSeparator = /^\|?\s*[-:\s]+\s*(\|\s*[-:\s]+)*\|?\s*$/.test(trimmedLine.replace(/\|/g, '').trim());
+                
+                if (isSeparator) {
+                    // Skip separator rows
+                    return;
+                }
+                
+                const nextLine = lines[index + 1] || '';
+                
+                // Check if next line is a table separator (contains ---)
+                if (nextLine.includes('---')) {
+                    if (!inTable) {
+                        inTable = true;
+                        tableContent = [];
+                    }
+                    // This is header row
+                    const cells = line.split('|').filter(c => c.trim());
+                    tableContent.push({ type: 'header', cells: cells });
+                } else if (inTable || tableContent.length === 0) {
+                    // This is a data row
+                    const cells = line.split('|').filter(c => c.trim());
+                    if (cells.length > 0) {
+                        tableContent.push({ type: 'row', cells: cells });
+                    }
+                }
+            } else {
+                // Not a table line
+                if (inTable && tableContent.length > 0) {
+                    // Build table HTML
+                    newHtml += '<table>';
+                    tableContent.forEach((row, idx) => {
+                        if (row.type === 'header') {
+                            newHtml += '<thead><tr>';
+                            row.cells.forEach(cell => {
+                                newHtml += '<th>' + cell.trim() + '</th>';
+                            });
+                            newHtml += '</tr></thead><tbody>';
+                        } else {
+                            newHtml += '<tr>';
+                            row.cells.forEach(cell => {
+                                newHtml += '<td>' + cell.trim() + '</td>';
+                            });
+                            newHtml += '</tr>';
+                        }
+                    });
+                    newHtml += '</tbody></table>';
+                    tableContent = [];
+                    inTable = false;
+                }
+                newHtml += line + (index < lines.length - 1 ? '\n' : '');
+            }
+        });
+        
+        // Handle any remaining table at end
+        if (inTable && tableContent.length > 0) {
+            newHtml += '<table>';
+            tableContent.forEach(row => {
+                if (row.type === 'header') {
+                    newHtml += '<thead><tr>';
+                    row.cells.forEach(cell => {
+                        newHtml += '<th>' + cell.trim() + '</th>';
+                    });
+                    newHtml += '</tr></thead><tbody>';
+                } else {
+                    newHtml += '<tr>';
+                    row.cells.forEach(cell => {
+                        newHtml += '<td>' + cell.trim() + '</td>';
+                    });
+                    newHtml += '</tr>';
+                }
+            });
+            newHtml += '</tbody></table>';
+        }
+        
+        html = newHtml || html;
+        
+        // Unordered lists (- item)
+        html = html.replace(/^- (.+)$/gm, '<li>$1</li>');
+        
+        // Convert consecutive li to ul
+        html = html.replace(/(<li>.*?<\/li>)+/g, function(match) {
+            return '<ul>' + match + '</ul>';
+        });
+        
+        // Task lists (- [ ] or - [x])
+        html = html.replace(/- \[ \] (.+)/g, '<input type="checkbox" disabled> $1');
+        html = html.replace(/- \[x\] (.+)/g, '<input type="checkbox" checked disabled> $1');
+        
+        // Line breaks to paragraphs
+        html = html.split('\n\n').map(p => p.trim()).filter(p => p).map(p => '<p>' + p.replace(/\n/g, '<br>') + '</p>').join('');
+        
+        return html;
+    }
+
+    // =========================================================================
     // Message Rendering
     // =========================================================================
 
@@ -149,8 +298,8 @@
         const messageDiv = document.createElement('div');
         messageDiv.className = 'message ai-message';
         
-        // Convert line breaks to HTML
-        const formattedText = escapeHtml(text).replace(/\n/g, '<br>');
+        // Parse markdown
+        const formattedText = parseMarkdown(text);
         
         messageDiv.innerHTML = `
             <div class="message-avatar">
@@ -166,7 +315,7 @@
                 </svg>
             </div>
             <div class="message-content">
-                <p>${formattedText}</p>
+                <div class="markdown-content">${formattedText}</div>
                 <span class="message-time">${formatTime(timestamp)}</span>
             </div>
         `;
