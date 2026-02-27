@@ -22,7 +22,7 @@ from dotenv import load_dotenv
 load_dotenv()
 
 from flask import Flask, render_template, request, jsonify, session, make_response
-from flask_cors import CORS
+from flask_cors import CORS, cross_origin
 import requests
 
 # Configure logging
@@ -56,7 +56,7 @@ def add_security_headers(response):
     response.headers['X-Frame-Options'] = 'DENY'
     response.headers['X-XSS-Protection'] = '1; mode=block'
     response.headers['Strict-Transport-Security'] = 'max-age=31536000; includeSubDomains'
-    response.headers['Content-Security-Policy'] = "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'"
+    response.headers['Content-Security-Policy'] = "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; media-src 'self' blob:"
     return response
 
 # Rate Limiting Storage (simple in-memory for development)
@@ -107,6 +107,12 @@ class Config:
     MAX_MESSAGE_LENGTH = int(os.environ.get('MAX_MESSAGE_LENGTH', '1000'))
     MAX_MESSAGES_CONTEXT = int(os.environ.get('MAX_MESSAGES_CONTEXT', '10'))
     RATE_LIMIT = int(os.environ.get('RATE_LIMIT', '30'))  # requests per minute
+    
+    # MiniMax TTS Configuration
+    MINIMAX_API_KEY = os.environ.get('MINIMAX_API_KEY', '')
+    MINIMAX_TTS_MODEL = os.environ.get('MINIMAX_TTS_MODEL', 'speech-2.8-turbo')
+    MINIMAX_TTS_VOICE_ID = os.environ.get('MINIMAX_TTS_VOICE_ID', 'Malay_female_2_v1')
+    MINIMAX_TTS_LANGUAGE = os.environ.get('MINIMAX_TTS_LANGUAGE', 'ms')  # Malay language code
     
     # System prompt for the AI receptionist
     SYSTEM_PROMPT = """You are a friendly and helpful AI receptionist for UiTM (Universiti Teknologi MARA), a Malaysian university. 
@@ -443,6 +449,133 @@ openrouter_service = OpenRouterService()
 
 
 # ============================================================================
+# MiniMax TTS Service
+# ============================================================================
+
+class MiniMaxTTSService:
+    """Service for interacting with MiniMax TTS API."""
+    
+    def __init__(self):
+        self.api_key = Config.MINIMAX_API_KEY
+        self.model = Config.MINIMAX_TTS_MODEL
+        self.voice_id = Config.MINIMAX_TTS_VOICE_ID
+        self.language = Config.MINIMAX_TTS_LANGUAGE
+        # Use the correct MiniMax API endpoint from documentation
+        self.api_url = "https://api.minimax.io/v1/t2a_v2"
+    
+    def _validate_api_key(self) -> bool:
+        """Check if API key is configured."""
+        return bool(self.api_key and self.api_key.strip())
+    
+    def synthesize_speech(self, text: str) -> bytes:
+        """
+        Synthesize speech from text using MiniMax TTS API.
+        
+        Args:
+            text: The text to synthesize
+            
+        Returns:
+            Audio data as bytes
+        """
+        if not self._validate_api_key():
+            logger.error("MiniMax API key not configured")
+            raise APIError("TTS not configured. Please set MINIMAX_API_KEY.", 503)
+        
+        if not text or not text.strip():
+            raise APIError("Text is required for TTS", 400)
+        
+        # Truncate text if too long (MiniMax has a limit)
+        text = text[:1000] if len(text) > 1000 else text
+        
+        headers = {
+            "Authorization": f"Bearer {self.api_key}",
+            "Content-Type": "application/json"
+        }
+        
+        # Build the request payload — use 'url' output so MiniMax returns
+        # a CDN URL; we download it server-side and stream clean MP3 bytes
+        # back to the browser (avoids fragile hex-decode pipeline).
+        payload = {
+            "model": self.model,
+            "text": text,
+            "stream": False,
+            "language_boost": "Malay" if self.language == "ms" else "auto",
+            "output_format": "url",
+            "voice_setting": {
+                "voice_id": self.voice_id,
+                "speed": 1.0,
+                "vol": 1.0,
+                "pitch": 0
+            },
+            "audio_setting": {
+                "sample_rate": 32000,
+                "bitrate": 128000,
+                "format": "mp3",
+                "channel": 1
+            }
+        }
+        
+        logger.info(f"Sending TTS request to MiniMax API with model: {self.model}, voice: {self.voice_id}")
+        
+        try:
+            response = requests.post(
+                self.api_url,
+                headers=headers,
+                json=payload,
+                timeout=60
+            )
+            
+            logger.info(f"MiniMax TTS response status: {response.status_code}")
+            logger.info(f"MiniMax TTS response body (first 500 chars): {response.text[:500]}")
+            
+            if response.status_code == 200:
+                result = response.json()
+                
+                # Check for successful response
+                if result.get('base_resp', {}).get('status_code') == 0:
+                    data = result.get('data', {})
+                    audio_url = data.get('audio')
+                    
+                    if audio_url:
+                        logger.info(f"MiniMax returned audio URL: {audio_url[:80]}...")
+                        # Download the MP3 from the CDN URL
+                        audio_response = requests.get(audio_url, timeout=30)
+                        if audio_response.status_code == 200:
+                            audio_bytes = audio_response.content
+                            logger.info(f"Downloaded audio: {len(audio_bytes)} bytes, first 4 bytes: {audio_bytes[:4].hex() if audio_bytes else 'empty'}")
+                            if not audio_bytes:
+                                raise APIError("Downloaded audio is empty", 500)
+                            return audio_bytes
+                        else:
+                            logger.error(f"Failed to download audio from CDN: {audio_response.status_code}")
+                            raise APIError("Failed to download audio from TTS provider", 502)
+                
+                # Check for error in response
+                error_msg = result.get('base_resp', {}).get('status_msg', 'Unknown error')
+                logger.error(f"TTS API error: {error_msg}")
+                raise APIError(f"TTS error: {error_msg}", 500)
+            else:
+                logger.error(f"TTS API error: {response.status_code} - {response.text}")
+                raise APIError(f"TTS API error: {response.status_code}", response.status_code)
+                
+        except requests.exceptions.Timeout:
+            logger.error("TTS request timed out")
+            raise APIError("TTS request timed out", 504)
+        except requests.exceptions.RequestException as e:
+            logger.error(f"TTS request failed: {e}")
+            raise APIError(f"TTS request failed: {str(e)}", 503)
+        except APIError:
+            raise  # Re-raise APIError as-is without wrapping
+        except Exception as e:
+            logger.error(f"Unexpected error in TTS: {e}")
+            raise APIError(f"Unexpected TTS error: {str(e)}", 500)
+
+
+# Initialize TTS service
+minimax_tts_service = MiniMaxTTSService()
+
+
+# ============================================================================
 # Flask Routes
 # ============================================================================
 
@@ -610,13 +743,73 @@ def health_check():
     """Health check endpoint."""
     api_key_configured = openrouter_service._validate_api_key()
     memory_dir_exists = Config.MEMORY_DIR.exists()
+    tts_configured = minimax_tts_service._validate_api_key()
     
     return jsonify({
         'status': 'healthy',
         'api_key_configured': api_key_configured,
         'memory_dir_exists': memory_dir_exists,
-        'model': Config.MODEL_NAME
+        'model': Config.MODEL_NAME,
+        'tts_configured': tts_configured
     })
+
+
+@app.route('/api/tts', methods=['POST'])
+def tts():
+    """
+    Generate TTS audio from text.
+    
+    Request JSON:
+        {
+            "text": "Text to convert to speech"
+        }
+        
+    Returns:
+        Audio file (MP3)
+    """
+    logger.info("TTS endpoint called!")
+    try:
+        data = request.get_json()
+        
+        if not data or 'text' not in data:
+            return jsonify({'error': 'Text is required'}), 400
+        
+        text = data['text']
+        
+        # NOTE: Do NOT use sanitize_input() here — html.escape() corrupts text
+        # (e.g. apostrophes become &#x27;) before it reaches the TTS engine.
+        # Only strip and truncate.
+        if not isinstance(text, str):
+            return jsonify({'error': 'Text must be a string'}), 400
+        
+        text = text.strip()
+        
+        if not text:
+            return jsonify({'error': 'Text cannot be empty'}), 400
+        
+        # Truncate to MiniMax's safe limit
+        if len(text) > 1000:
+            text = text[:1000]
+        
+        # Generate speech
+        audio_data = minimax_tts_service.synthesize_speech(text)
+        
+        if not audio_data:
+            return jsonify({'error': 'Failed to generate audio'}), 500
+        
+        # Return audio file
+        response = make_response(audio_data)
+        response.headers['Content-Type'] = 'audio/mpeg'
+        response.headers['Content-Disposition'] = 'inline; filename=speech.mp3'
+        
+        return response
+        
+    except APIError as e:
+        logger.error(f"TTS APIError: {e.message} (status {e.status_code})")
+        return jsonify({'error': e.message}), e.status_code
+    except Exception as e:
+        logger.error(f"TTS unexpected error: {e}")
+        return jsonify({'error': f'Failed to generate audio: {str(e)}'}), 500
 
 
 # ============================================================================

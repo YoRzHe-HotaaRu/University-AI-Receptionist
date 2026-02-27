@@ -675,6 +675,47 @@ body {
     opacity: 0.7;
 }
 
+/* Message Actions (TTS Button) */
+.message-actions {
+    display: flex;
+    gap: var(--spacing-xs);
+    margin-top: var(--spacing-xs);
+}
+
+.tts-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    padding: 0;
+    border: none;
+    border-radius: var(--radius);
+    background: hsl(var(--accent) / 0.1);
+    color: hsl(var(--accent));
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.tts-btn:hover {
+    background: hsl(var(--accent) / 0.2);
+    transform: scale(1.05);
+}
+
+.tts-btn.playing {
+    background: hsl(var(--accent) / 0.3);
+    animation: pulse 1s ease-in-out infinite;
+}
+
+.tts-btn svg.spinning {
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
 /* Error Message */
 .message.error-message .message-content {
     background: hsl(var(--destructive) / 0.1);

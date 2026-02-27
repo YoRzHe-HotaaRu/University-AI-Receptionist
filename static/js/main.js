@@ -15,6 +15,7 @@
         MEMORY_ENDPOINT: '/api/memory',
         RESET_ENDPOINT: '/api/reset',
         HEALTH_ENDPOINT: '/api/health',
+        TTS_ENDPOINT: '/api/tts',
         TYPING_INDICATOR_DELAY: 500,
         MAX_RETRIES: 3,
         RETRY_DELAY: 1000
@@ -316,12 +317,105 @@
             </div>
             <div class="message-content">
                 <div class="markdown-content">${formattedText}</div>
+                <div class="message-actions">
+                    <button class="tts-btn" title="Play audio" data-text="${escapeHtml(text)}">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
+                            <path d="M15.54 8.46a5 5 0 0 1 0 7.07"></path>
+                            <path d="M19.07 4.93a10 10 0 0 1 0 14.14"></path>
+                        </svg>
+                    </button>
+                </div>
                 <span class="message-time">${formatTime(timestamp)}</span>
             </div>
         `;
         
+        // Add TTS button event listener
+        const ttsBtn = messageDiv.querySelector('.tts-btn');
+        ttsBtn.addEventListener('click', () => playTTS(text, ttsBtn));
+        
         elements.chatMessages.appendChild(messageDiv);
         scrollToBottom();
+    }
+    
+    /**
+     * Play TTS audio for text
+     * @param {string} text - Text to convert to speech
+     * @param {HTMLElement} button - Button element
+     */
+    async function playTTS(text, button) {
+        // Prevent multiple clicks
+        if (button.classList.contains('playing')) return;
+        
+        button.classList.add('playing');
+        button.innerHTML = `
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="spinning">
+                <path d="M12 2v4"></path>
+                <path d="M12 18v4"></path>
+                <path d="M4.93 4.93l2.83 2.83"></path>
+                <path d="M16.24 16.24l2.83 2.83"></path>
+                <path d="M2 12h4"></path>
+                <path d="M18 12h4"></path>
+                <path d="M4.93 19.07l2.83-2.83"></path>
+                <path d="M16.24 7.76l2.83-2.83"></path>
+            </svg>
+        `;
+        
+        try {
+            const response = await fetch(CONFIG.TTS_ENDPOINT, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ text: text })
+            });
+            
+            if (!response.ok) {
+                const errorData = await response.json().catch(() => ({}));
+                throw new Error(errorData.error || `TTS request failed with status ${response.status}`);
+            }
+            
+            const audioBlob = await response.blob();
+            const audioUrl = URL.createObjectURL(audioBlob);
+            const audio = new Audio(audioUrl);
+            
+            audio.onended = () => {
+                button.classList.remove('playing');
+                button.innerHTML = `
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
+                        <path d="M15.54 8.46a5 5 0 0 1 0 7.07"></path>
+                        <path d="M19.07 4.93a10 10 0 0 1 0 14.14"></path>
+                    </svg>
+                `;
+                URL.revokeObjectURL(audioUrl);
+            };
+            
+            audio.onerror = () => {
+                button.classList.remove('playing');
+                button.innerHTML = `
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
+                        <path d="M15.54 8.46a5 5 0 0 1 0 7.07"></path>
+                        <path d="M19.07 4.93a10 10 0 0 1 0 14.14"></path>
+                    </svg>
+                `;
+            };
+            
+            await audio.play();
+            
+        } catch (error) {
+            console.error('TTS error:', error);
+            button.classList.remove('playing');
+            button.innerHTML = `
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
+                    <path d="M15.54 8.46a5 5 0 0 1 0 7.07"></path>
+                    <path d="M19.07 4.93a10 10 0 0 1 0 14.14"></path>
+                </svg>
+            `;
+            alert('TTS Error: ' + error.message);
+        }
     }
 
     /**

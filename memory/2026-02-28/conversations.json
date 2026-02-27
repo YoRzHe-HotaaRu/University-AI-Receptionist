@@ -1,0 +1,175 @@
+{
+  "date": "2026-02-28",
+  "messages": [
+    {
+      "role": "user",
+      "content": "hello",
+      "timestamp": "2026-02-28T00:44:00.214891"
+    },
+    {
+      "role": "assistant",
+      "content": "Hai! 👋 Selamat datang semula.\n\nApa khabar? Ada apa yang boleh saya bantu anda hari ini? Sama ada tentang pendaftaran, program akademik, yuran, atau lokasi kampus, saya sedia membantu. 😊",
+      "timestamp": "2026-02-28T00:44:00.214891"
+    },
+    {
+      "role": "user",
+      "content": "hello",
+      "timestamp": "2026-02-28T00:47:58.520966"
+    },
+    {
+      "role": "assistant",
+      "content": "Hai! 👋 Selamat datang semula!\n\nApa khabar hari ini? Ada apa-apa yang boleh saya bantu anda? Sama ada soalan tentang pendaftaran, yuran, program akademik, atau lokasi kampus, saya sedia membantu.\n\nJangan segan untuk bertanya ya! 😊",
+      "timestamp": "2026-02-28T00:47:58.520966"
+    },
+    {
+      "role": "user",
+      "content": "hello",
+      "timestamp": "2026-02-28T00:53:58.212720"
+    },
+    {
+      "role": "assistant",
+      "content": "Hai! 👋 Selamat datang semula ke UiTM!\n\nApa khabar hari ini? 😊\n\nAda apa-apa yang boleh saya bantu? Sama ada soalan tentang pendaftaran, program, yuran, atau lokasi kampus, saya sedia membantu anda. Sila tanya ya!",
+      "timestamp": "2026-02-28T00:53:58.212720"
+    },
+    {
+      "role": "user",
+      "content": "HELLO",
+      "timestamp": "2026-02-28T01:02:33.617262"
+    },
+    {
+      "role": "assistant",
+      "content": "Hai! 👋 Selamat sejahtera!\n\nAda apa-apa yang boleh saya bantu anda hari ini? Saya sedia menjawab soalan anda mengenai UiTM, sama ada tentang pendaftaran, program, yuran, atau lokasi kampus.\n\nSila beritahu saya apa yang anda perlukan! 😊",
+      "timestamp": "2026-02-28T01:02:33.617262"
+    },
+    {
+      "role": "user",
+      "content": "hello",
+      "timestamp": "2026-02-28T01:05:12.415864"
+    },
+    {
+      "role": "assistant",
+      "content": "Hai! 👋 Selamat datang semula!\n\nApa khabar? Ada apa-apa yang boleh saya bantu anda hari ini? Sama ada tentang pendaftaran, yuran, program akademik, atau lokasi kampus, saya sedia membantu.\n\nJangan segan untuk bertanya ya! 😊",
+      "timestamp": "2026-02-28T01:05:12.415864"
+    },
+    {
+      "role": "user",
+      "content": "hello",
+      "timestamp": "2026-02-28T01:05:19.823493"
+    },
+    {
+      "role": "assistant",
+      "content": "Hai! 👋 Selamat datang semula!\n\nApa khabar hari ini? Ada apa-apa yang boleh saya bantu anda? Sama ada soalan tentang pendaftaran, yuran, program akademik, atau lokasi kampus, saya sedia membantu.\n\nJangan segan untuk bertanya ya! 😊",
+      "timestamp": "2026-02-28T01:05:19.823493"
+    },
+    {
+      "role": "user",
+      "content": "hello",
+      "timestamp": "2026-02-28T01:27:27.377156"
+    },
+    {
+      "role": "assistant",
+      "content": "Hai! 👋 Selamat datang semula! Apa khabar hari ini?\n\nAda apa yang boleh saya bantu anda? Sama ada mengenai pendaftaran, yuran, program akademik, atau lokasi kampus, saya sedia memberikan maklumat.\n\nJangan segan untuk bertanya ya! 😊",
+      "timestamp": "2026-02-28T01:27:27.377156"
+    },
+    {
+      "role": "user",
+      "content": "hello",
+      "timestamp": "2026-02-28T01:35:05.740678"
+    },
+    {
+      "role": "assistant",
+      "content": "Hai! 👋 Selamat sejahtera!\n\nApa khabar? Ada apa-apa yang boleh saya bantu anda hari ini?\n\nSama ada anda ingin bertanya tentang:\n✅ Pendaftaran & Kemasukan\n✅ Program & Kursus\n✅ Yuran & Bantuan\n✅ Lokasi Kampus\n\nSila beritahu saya apa yang anda perlukan. Saya sedia membantu! 😊",
+      "timestamp": "2026-02-28T01:35:05.740678"
+    },
+    {
+      "role": "user",
+      "content": "heloo",
+      "timestamp": "2026-02-28T01:35:19.133948"
+    },
+    {
+      "role": "assistant",
+      "content": "Hai! 👋 Selamat datang semula! Apa khabar hari ini?\n\nAda apa-apa yang boleh saya bantu anda? Sama ada soalan tentang pendaftaran, yuran, program, atau lokasi kampus, saya sedia membantu. 😊\n\nJangan segan-segan untuk bertanya ya!",
+      "timestamp": "2026-02-28T01:35:19.133948"
+    },
+    {
+      "role": "user",
+      "content": "hello",
+      "timestamp": "2026-02-28T01:39:31.512610"
+    },
+    {
+      "role": "assistant",
+      "content": "Hai! 👋 Selamat datang semula!\n\nApa khabar? 🌞 Ada apa-apa yang boleh saya bantu anda hari ini? Sama ada tentang pendaftaran, program akademik, atau sebarang pertanyaan lain mengenai UiTM.\n\nJangan segan untuk tanya ya! 😊",
+      "timestamp": "2026-02-28T01:39:31.512610"
+    },
+    {
+      "role": "user",
+      "content": "hello",
+      "timestamp": "2026-02-28T01:42:40.630284"
+    },
+    {
+      "role": "assistant",
+      "content": "Hai! 👋 Selamat datang semula! Apa khabar hari ini?\n\nAda apa yang boleh saya bantu anda hari ini? Sama ada tentang pendaftaran, yuran, program akademik, atau lokasi kampus, saya sedia membantu. Sila tanya sahaja! 😊",
+      "timestamp": "2026-02-28T01:42:40.630284"
+    },
+    {
+      "role": "user",
+      "content": "hello",
+      "timestamp": "2026-02-28T01:46:06.464591"
+    },
+    {
+      "role": "assistant",
+      "content": "Hai! 👋 Selamat datang kembali!\n\nApa khabar anda hari ini? Ada apa-apa yang boleh saya bantu?\n\nSama ada anda ada soalan tentang UiTM, pendaftaran, kemasukan, atau sebarang maklumat lain, saya sedia membantu. 😊",
+      "timestamp": "2026-02-28T01:46:06.464591"
+    },
+    {
+      "role": "user",
+      "content": "hello",
+      "timestamp": "2026-02-28T01:46:46.785898"
+    },
+    {
+      "role": "assistant",
+      "content": "Hai! 👋 Selamat sejahtera! Apa khabar hari ini?\n\nSaya sedia membantu anda dengan sebarang maklumat mengenai UiTM. Sama ada anda ingin tanya tentang pendaftaran, yuran, program akademik, atau lokasi kampus, jangan segan untuk bertanya ya!\n\nAda apa yang boleh saya bantu? 😊",
+      "timestamp": "2026-02-28T01:46:46.785898"
+    },
+    {
+      "role": "user",
+      "content": "hello",
+      "timestamp": "2026-02-28T01:54:23.455201"
+    },
+    {
+      "role": "assistant",
+      "content": "Hai! 👋 Selamat datang semula! 👋\n\nApa khabar hari ini? Ada apa-apa yang saya boleh bantu anda? Sama ada mengenai kemasukan UiTM, program akademik, yuran, lokasi kampus, atau pertanyaan umum, saya sedia membantu.\n\nJangan ragu untuk bertanya ya! 😊",
+      "timestamp": "2026-02-28T01:54:23.455201"
+    },
+    {
+      "role": "user",
+      "content": "hello",
+      "timestamp": "2026-02-28T01:59:10.998590"
+    },
+    {
+      "role": "assistant",
+      "content": "Hai! 👋 Selamat sejahtera!\n\nAda apa yang boleh saya bantu anda hari ini? Saya sedia membantu anda dengan maklumat mengenai UiTM, sama ada tentang pendaftaran, kursus, yuran, atau lokasi kampus.\n\nJangan segan untuk bertanya ya! 😊",
+      "timestamp": "2026-02-28T01:59:10.998590"
+    },
+    {
+      "role": "user",
+      "content": "hello",
+      "timestamp": "2026-02-28T02:01:23.336429"
+    },
+    {
+      "role": "assistant",
+      "content": "Hai! 👋 Selamat datang semula ke UiTM.\n\nApa khabar hari ini? Ada apa-apa yang boleh saya bantu anda?\n\nSama ada mengenai pendaftaran, yuran, program akademik, atau lokasi kampus, saya sedia membantu. Jangan segan untuk bertanya ya! 😊",
+      "timestamp": "2026-02-28T02:01:23.336429"
+    },
+    {
+      "role": "user",
+      "content": "hello",
+      "timestamp": "2026-02-28T02:03:29.420492"
+    },
+    {
+      "role": "assistant",
+      "content": "Hai! 👋 Selamat datang!\n\nApa khabar hari ini? Saya sedia membantu jika anda ada sebarang pertanyaan mengenai UiTM, sama ada tentang pendaftaran, program akademik, yuran, atau lokasi kampus.\n\nAda apa-apa yang ingin anda ketahui? 😊",
+      "timestamp": "2026-02-28T02:03:29.420492"
+    }
+  ]
+}
