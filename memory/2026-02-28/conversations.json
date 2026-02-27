@@ -210,6 +210,16 @@
       "role": "assistant",
       "content": "Wah! Kalau Yazid dapat 4.00 CGPA, tu sebenarnya prestasi yang **cemerlang** dan tertinggi di UiTM! 🎉\n\nDi UiTM, sistem pengiraan CGPA adalah antara **0.00 hingga 4.00**. Jadi, kalau dia \"4 flat\", itu bermakna dia mendapat keputusan sangat cemerlang (setara dengan A dalam semua subjek).\n\nTetapi, kalau maksudnya Yazid **sedang risau** atau ada salah faham tentang markah, ni nasihat saya:\n\n| Situasi | Nasihat |\n| :--- | :--- |\n| **Jika CGPA 4.00** | Teruskan usaha! Elakkan tekanan berlebihan, jaga kesihatan, dan sertai aktiviti ko-kurikulum untuk *soft skills*. |\n| **Jika CGPA 3.00 / 3.50** | Bagus juga! Fokus pada subjek yang sukar dan dapatkan bantuan tutor jika perlu. |\n| **Jika CGPA 2.00 ke bawah** | Jangan putus asa! Rujuk Peubuh Akademik untuk pelan pemulihan dan kaedah belajar yang lebih efektif. |\n| **Salah Faham Skala** | Pastikan Yazid faham skala UiTM (4.00 = A/Pujian Tertinggi). |\n\nKalau ada apa-apa lagi tentang akademik atau bimbingan pelajar, boleh tanya saya ya! 😊",
       "timestamp": "2026-02-28T02:20:38.022469"
+    },
+    {
+      "role": "user",
+      "content": "hello",
+      "timestamp": "2026-02-28T02:26:10.943377"
+    },
+    {
+      "role": "assistant",
+      "content": "Hai! 👋 Selamat datang semula!\n\nApa khabar hari ini? Saya sedia membantu anda dengan maklumat mengenai UiTM. Ada apa-apa yang ingin anda tanyakan? Sama ada tentang pendaftaran, kursus, yuran, atau lokasi kampus?\n\nSaya menunggu soalan anda! 😊",
+      "timestamp": "2026-02-28T02:26:10.943377"
     }
   ]
 }

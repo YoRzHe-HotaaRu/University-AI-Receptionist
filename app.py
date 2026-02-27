@@ -111,7 +111,7 @@ class Config:
     # MiniMax TTS Configuration
     MINIMAX_API_KEY = os.environ.get('MINIMAX_API_KEY', '')
     MINIMAX_TTS_MODEL = os.environ.get('MINIMAX_TTS_MODEL', 'speech-2.8-turbo')
-    MINIMAX_TTS_VOICE_ID = os.environ.get('MINIMAX_TTS_VOICE_ID', 'Malay_female_2_v1')
+    MINIMAX_TTS_VOICE_ID = os.environ.get('MINIMAX_TTS_VOICE_ID', 'Malay_male_1_v1')
     MINIMAX_TTS_LANGUAGE = os.environ.get('MINIMAX_TTS_LANGUAGE', 'ms')  # Malay language code
     
     # System prompt for the AI receptionist
@@ -499,13 +499,13 @@ class MiniMaxTTSService:
             "model": self.model,
             "text": text,
             "stream": False,
-            "language_boost": "Malay" if self.language == "ms" else "auto",
+            "language_boost": "Malay",
             "output_format": "url",
             "voice_setting": {
                 "voice_id": self.voice_id,
-                "speed": 1.0,
+                "speed": 1.2,
                 "vol": 1.0,
-                "pitch": 0
+                "pitch": -1
             },
             "audio_setting": {
                 "sample_rate": 32000,
