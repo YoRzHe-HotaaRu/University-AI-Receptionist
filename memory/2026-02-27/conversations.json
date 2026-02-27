@@ -130,6 +130,26 @@
       "role": "assistant",
       "content": "Hello there! 👋 That's a fantastic question for planning your year.\n\nSince academic calendars and class schedules vary by term and major, I don't have the specific real-time dates in front of me. However, I can point you to the official sources where you'll find the exact schedule!\n\n| Information | Best Resource |\n| :--- | :--- |\n| **Academic Calendar** | Registrar's Office Website |\n| **Class Schedule** | Student Portal (Course Search) |\n| **Important Deadlines** | Academic Affairs Office |\n\nWould you like me to provide the direct contact details for the Registrar's Office so you can access the current semester's schedule? 😊",
       "timestamp": "2026-02-27T05:39:27.870545"
+    },
+    {
+      "role": "user",
+      "content": "helllo",
+      "timestamp": "2026-02-27T23:05:43.493388"
+    },
+    {
+      "role": "assistant",
+      "content": "Hai! 👋 Selamat datang semula!\n\nApa khabar hari ini? Ada apa-apa yang boleh saya bantu anda? Sama ada soalan tentang pendaftaran, yuran, program akademik, atau lokasi kampus, saya sedia membantu.\n\nJangan segan untuk bertanya ya! 😊",
+      "timestamp": "2026-02-27T23:05:43.493388"
+    },
+    {
+      "role": "user",
+      "content": "jap, ape yang ko tahu?",
+      "timestamp": "2026-02-27T23:10:08.033600"
+    },
+    {
+      "role": "assistant",
+      "content": "Hai! 👋 Sebagai AI Resepsionis UiTM, saya boleh bantu anda dengan pelbagai maklumat termasuk:\n\n1.  **Pendaftaran & Kemasukan** – Syarat dan proses permohonan.\n2.  **Yuran & Bantuan Kewangan** – Maklumat yuran dan bantuan.\n3.  **Program Akademik** – Senarai kursus dan jurusan.\n4.  **Cawangan & Lokasi Kampus** – Alamat dan jam operasi.\n5.  **FAQ** – Soalan-soalan biasa pelajar.\n\nPerlu diingat, untuk maklumat yang paling terkini (seperti jadual kelas semasa), sila rujuk laman rasmi UiTM ya.\n\nAda apa-apa lagi yang anda ingin tahu? 😊",
+      "timestamp": "2026-02-27T23:10:08.033600"
     }
   ]
 }
