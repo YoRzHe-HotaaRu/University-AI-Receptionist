@@ -675,40 +675,55 @@ body {
     opacity: 0.7;
 }
 
-/* Message Actions (TTS Button) */
-.message-actions {
+/* Chat Header Right Group */
+.chat-header-right {
     display: flex;
-    gap: var(--spacing-xs);
-    margin-top: var(--spacing-xs);
+    align-items: center;
+    gap: var(--spacing-md);
 }
 
-.tts-btn {
+/* TTS Auto-play Toggle Button */
+.tts-toggle-btn {
     display: inline-flex;
     align-items: center;
-    justify-content: center;
-    width: 28px;
-    height: 28px;
-    padding: 0;
-    border: none;
-    border-radius: var(--radius);
-    background: hsl(var(--accent) / 0.1);
-    color: hsl(var(--accent));
+    gap: var(--spacing-sm);
+    padding: var(--spacing-xs) var(--spacing-md);
+    background: hsl(var(--secondary));
+    border: 1px solid hsl(var(--border));
+    border-radius: 9999px;
+    color: hsl(var(--muted-foreground));
+    font-size: 0.75rem;
+    font-weight: 500;
     cursor: pointer;
-    transition: all 0.2s ease;
+    transition: var(--transition-all);
+    white-space: nowrap;
 }
 
-.tts-btn:hover {
-    background: hsl(var(--accent) / 0.2);
-    transform: scale(1.05);
+.tts-toggle-btn svg {
+    flex-shrink: 0;
+    color: hsl(var(--muted-foreground));
+    transition: var(--transition-all);
 }
 
-.tts-btn.playing {
-    background: hsl(var(--accent) / 0.3);
+.tts-toggle-btn:hover {
+    border-color: hsl(var(--primary) / 0.5);
+    color: hsl(var(--foreground));
+}
+
+.tts-toggle-btn.active {
+    background: hsl(var(--primary) / 0.15);
+    border-color: hsl(var(--primary) / 0.6);
+    color: hsl(var(--primary));
+    box-shadow: 0 0 10px hsl(var(--primary) / 0.2);
+}
+
+.tts-toggle-btn.active svg {
+    color: hsl(var(--primary));
+}
+
+/* TTS loading pulse on the toggle when generating audio */
+.tts-toggle-btn.loading {
     animation: pulse 1s ease-in-out infinite;
-}
-
-.tts-btn svg.spinning {
-    animation: spin 1s linear infinite;
 }
 
 @keyframes spin {

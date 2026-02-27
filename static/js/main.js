@@ -32,13 +32,19 @@
         typingIndicator: document.getElementById('typing-indicator'),
         statusIndicator: document.getElementById('status-indicator'),
         resetButton: document.getElementById('reset-btn'),
-        quickButtons: document.querySelectorAll('.quick-btn')
+        quickButtons: document.querySelectorAll('.quick-btn'),
+        ttsToggleBtn: document.getElementById('tts-toggle-btn'),
+        ttsIconOff: document.getElementById('tts-icon-off'),
+        ttsIconOn: document.getElementById('tts-icon-on'),
+        ttsToggleLabel: document.getElementById('tts-toggle-label')
     };
 
     // =========================================================================
     // State
     // =========================================================================
     let isProcessing = false;
+    let ttsEnabled = false;        // TTS auto-play toggle state
+    let currentAudio = null;       // Track playing audio so we can stop it
 
     // =========================================================================
     // Utility Functions
@@ -317,106 +323,98 @@
             </div>
             <div class="message-content">
                 <div class="markdown-content">${formattedText}</div>
-                <div class="message-actions">
-                    <button class="tts-btn" title="Play audio" data-text="${escapeHtml(text)}">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
-                            <path d="M15.54 8.46a5 5 0 0 1 0 7.07"></path>
-                            <path d="M19.07 4.93a10 10 0 0 1 0 14.14"></path>
-                        </svg>
-                    </button>
-                </div>
                 <span class="message-time">${formatTime(timestamp)}</span>
             </div>
         `;
-        
-        // Add TTS button event listener
-        const ttsBtn = messageDiv.querySelector('.tts-btn');
-        ttsBtn.addEventListener('click', () => playTTS(text, ttsBtn));
         
         elements.chatMessages.appendChild(messageDiv);
         scrollToBottom();
     }
     
     /**
-     * Play TTS audio for text
+     * Auto-play TTS for a given text (used when toggle is enabled).
+     * Shows a loading state on the toggle button while fetching audio.
      * @param {string} text - Text to convert to speech
-     * @param {HTMLElement} button - Button element
      */
-    async function playTTS(text, button) {
-        // Prevent multiple clicks
-        if (button.classList.contains('playing')) return;
-        
-        button.classList.add('playing');
-        button.innerHTML = `
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="spinning">
-                <path d="M12 2v4"></path>
-                <path d="M12 18v4"></path>
-                <path d="M4.93 4.93l2.83 2.83"></path>
-                <path d="M16.24 16.24l2.83 2.83"></path>
-                <path d="M2 12h4"></path>
-                <path d="M18 12h4"></path>
-                <path d="M4.93 19.07l2.83-2.83"></path>
-                <path d="M16.24 7.76l2.83-2.83"></path>
-            </svg>
-        `;
-        
+    async function playTTSAuto(text) {
+        if (!ttsEnabled) return;
+
+        // Stop any currently playing audio
+        if (currentAudio) {
+            currentAudio.pause();
+            currentAudio = null;
+        }
+
+        // Show loading state on toggle button
+        elements.ttsToggleBtn.classList.add('loading');
+
         try {
             const response = await fetch(CONFIG.TTS_ENDPOINT, {
                 method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
+                headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ text: text })
             });
-            
+
             if (!response.ok) {
                 const errorData = await response.json().catch(() => ({}));
-                throw new Error(errorData.error || `TTS request failed with status ${response.status}`);
+                console.error('TTS error:', errorData.error || response.status);
+                return;
             }
-            
+
             const audioBlob = await response.blob();
             const audioUrl = URL.createObjectURL(audioBlob);
             const audio = new Audio(audioUrl);
-            
+            currentAudio = audio;
+
             audio.onended = () => {
-                button.classList.remove('playing');
-                button.innerHTML = `
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
-                        <path d="M15.54 8.46a5 5 0 0 1 0 7.07"></path>
-                        <path d="M19.07 4.93a10 10 0 0 1 0 14.14"></path>
-                    </svg>
-                `;
+                currentAudio = null;
                 URL.revokeObjectURL(audioUrl);
+                elements.ttsToggleBtn.classList.remove('loading');
             };
-            
+
             audio.onerror = () => {
-                button.classList.remove('playing');
-                button.innerHTML = `
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
-                        <path d="M15.54 8.46a5 5 0 0 1 0 7.07"></path>
-                        <path d="M19.07 4.93a10 10 0 0 1 0 14.14"></path>
-                    </svg>
-                `;
+                currentAudio = null;
+                URL.revokeObjectURL(audioUrl);
+                elements.ttsToggleBtn.classList.remove('loading');
+                console.error('TTS audio playback error');
             };
-            
+
             await audio.play();
-            
+
         } catch (error) {
-            console.error('TTS error:', error);
-            button.classList.remove('playing');
-            button.innerHTML = `
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
-                    <path d="M15.54 8.46a5 5 0 0 1 0 7.07"></path>
-                    <path d="M19.07 4.93a10 10 0 0 1 0 14.14"></path>
-                </svg>
-            `;
-            alert('TTS Error: ' + error.message);
+            console.error('TTS auto-play error:', error);
+            elements.ttsToggleBtn.classList.remove('loading');
         }
     }
+
+    /**
+     * Toggle the TTS auto-play feature on/off.
+     */
+    function toggleTTS() {
+        ttsEnabled = !ttsEnabled;
+
+        if (ttsEnabled) {
+            elements.ttsToggleBtn.classList.add('active');
+            elements.ttsToggleBtn.setAttribute('aria-pressed', 'true');
+            elements.ttsToggleBtn.title = 'Toggle auto voice (TTS on)';
+            elements.ttsIconOff.style.display = 'none';
+            elements.ttsIconOn.style.display = 'inline-block';
+            elements.ttsToggleLabel.textContent = 'Suara: Hidup';
+        } else {
+            // Stop any playing audio immediately
+            if (currentAudio) {
+                currentAudio.pause();
+                currentAudio = null;
+            }
+            elements.ttsToggleBtn.classList.remove('active', 'loading');
+            elements.ttsToggleBtn.setAttribute('aria-pressed', 'false');
+            elements.ttsToggleBtn.title = 'Toggle auto voice (TTS off)';
+            elements.ttsIconOff.style.display = 'inline-block';
+            elements.ttsIconOn.style.display = 'none';
+            elements.ttsToggleLabel.textContent = 'Suara: Mati';
+        }
+    }
+
 
     /**
      * Create and append an error message
@@ -551,6 +549,8 @@
             if (result.success) {
                 appendAiMessage(result.response, result.timestamp);
                 updateStatus('ready', 'Ready');
+                // Auto-play TTS if toggle is enabled (fire-and-forget)
+                playTTSAuto(result.response);
             } else {
                 appendErrorMessage(result.error || 'An error occurred');
                 updateStatus('error', 'Error');
@@ -677,6 +677,9 @@
         
         elements.resetButton.addEventListener('click', handleResetClick);
         
+        // Set up TTS toggle
+        elements.ttsToggleBtn.addEventListener('click', toggleTTS);
+
         // Set up enter key handling
         elements.messageInput.addEventListener('keydown', (event) => {
             if (event.key === 'Enter' && !event.shiftKey) {

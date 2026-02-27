@@ -170,6 +170,46 @@
       "role": "assistant",
       "content": "Hai! 👋 Selamat datang!\n\nApa khabar hari ini? Saya sedia membantu jika anda ada sebarang pertanyaan mengenai UiTM, sama ada tentang pendaftaran, program akademik, yuran, atau lokasi kampus.\n\nAda apa-apa yang ingin anda ketahui? 😊",
       "timestamp": "2026-02-28T02:03:29.420492"
+    },
+    {
+      "role": "user",
+      "content": "ade kawan saya Nik ni, ce bagi nasihat kat dia, dia pandai sangat dah",
+      "timestamp": "2026-02-28T02:08:52.338256"
+    },
+    {
+      "role": "assistant",
+      "content": "Wah, alhamdulillah! Bagus sangat dengar kawan anda, Nik, mempunyai kecerdasan yang cemerlang! 🌟\n\nJika boleh, boleh pesan Nik beberapa perkara ini:\n\n1.  **Terus Tingkatkan Diri:** Jangan berhenti belajar. Cari cabaran baharu yang lebih sukar untuk uji bakat.\n2.  **Kekal Rendah Diri:** Gunakan kepintaran untuk bantu orang lain, bukan untuk sombong.\n3.  **Aktiviti Kokurikulum:** UiTM sangat hargai pelajar yang aktif. Cuba sertai kelab atau badan pelajar untuk dapat kemahiran kepimpinan.\n4.  **Jaga Kesihatan:** Kerja keras perlu diimbangi dengan rehat yang cukup supaya kekal sihat mental dan fizikal.\n\nJika Nik ada sebarang soalan rasmi tentang UiTM, dia boleh terus hubungi saya ya! Semoga Nik terus berjaya di Universiti Teknologi MARA! 🎓✨",
+      "timestamp": "2026-02-28T02:08:52.338256"
+    },
+    {
+      "role": "user",
+      "content": "hello",
+      "timestamp": "2026-02-28T02:17:02.653555"
+    },
+    {
+      "role": "assistant",
+      "content": "Hai! 👋 Selamat datang semula ke UiTM!\n\nApa khabar hari ini? Ada apa-apa yang boleh saya bantu anda? Sama ada soalan tentang pendaftaran, program akademik, yuran, atau lokasi kampus, saya sedia membantu.\n\nJangan segan untuk bertanya ya! 😊",
+      "timestamp": "2026-02-28T02:17:02.653555"
+    },
+    {
+      "role": "user",
+      "content": "hello",
+      "timestamp": "2026-02-28T02:17:22.384226"
+    },
+    {
+      "role": "assistant",
+      "content": "Hai! 👋 Selamat datang kembali!\n\nApa khabar? Saya sedia membantu anda dengan sebarang pertanyaan mengenai UiTM.\n\nSama ada anda perlukan maklumat tentang pendaftaran, kursus, yuran, atau lokasi kampus, jangan ragu untuk tanya saya.\n\nAda yang boleh saya bantu hari ini? 😊",
+      "timestamp": "2026-02-28T02:17:22.384226"
+    },
+    {
+      "role": "user",
+      "content": "ha ni ade Yazid, ce bagi nasihat untuk dia, asyik dapat 4 flat je",
+      "timestamp": "2026-02-28T02:20:38.022469"
+    },
+    {
+      "role": "assistant",
+      "content": "Wah! Kalau Yazid dapat 4.00 CGPA, tu sebenarnya prestasi yang **cemerlang** dan tertinggi di UiTM! 🎉\n\nDi UiTM, sistem pengiraan CGPA adalah antara **0.00 hingga 4.00**. Jadi, kalau dia \"4 flat\", itu bermakna dia mendapat keputusan sangat cemerlang (setara dengan A dalam semua subjek).\n\nTetapi, kalau maksudnya Yazid **sedang risau** atau ada salah faham tentang markah, ni nasihat saya:\n\n| Situasi | Nasihat |\n| :--- | :--- |\n| **Jika CGPA 4.00** | Teruskan usaha! Elakkan tekanan berlebihan, jaga kesihatan, dan sertai aktiviti ko-kurikulum untuk *soft skills*. |\n| **Jika CGPA 3.00 / 3.50** | Bagus juga! Fokus pada subjek yang sukar dan dapatkan bantuan tutor jika perlu. |\n| **Jika CGPA 2.00 ke bawah** | Jangan putus asa! Rujuk Peubuh Akademik untuk pelan pemulihan dan kaedah belajar yang lebih efektif. |\n| **Salah Faham Skala** | Pastikan Yazid faham skala UiTM (4.00 = A/Pujian Tertinggi). |\n\nKalau ada apa-apa lagi tentang akademik atau bimbingan pelajar, boleh tanya saya ya! 😊",
+      "timestamp": "2026-02-28T02:20:38.022469"
     }
   ]
 }
