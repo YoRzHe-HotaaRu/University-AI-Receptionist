@@ -102,7 +102,7 @@ class Config:
     OPENROUTER_API_KEY = os.environ.get('OPENROUTER_API_KEY', '')
     OPENROUTER_API_URL = os.environ.get('OPENROUTER_API_URL', 
         'https://openrouter.ai/api/v1/chat/completions')
-    MODEL_NAME = os.environ.get('MODEL_NAME', 'qwen/qwen3.5-flash-02-23')
+    MODEL_NAME = os.environ.get('MODEL_NAME', 'qwen/qwen3.5-plus-02-15')
     MEMORY_DIR = Path(os.environ.get('MEMORY_DIR', 'memory'))
     MAX_MESSAGE_LENGTH = int(os.environ.get('MAX_MESSAGE_LENGTH', '1000'))
     MAX_MESSAGES_CONTEXT = int(os.environ.get('MAX_MESSAGES_CONTEXT', '10'))
@@ -111,7 +111,7 @@ class Config:
     # MiniMax TTS Configuration
     MINIMAX_API_KEY = os.environ.get('MINIMAX_API_KEY', '')
     MINIMAX_TTS_MODEL = os.environ.get('MINIMAX_TTS_MODEL', 'speech-2.8-turbo')
-    MINIMAX_TTS_VOICE_ID = os.environ.get('MINIMAX_TTS_VOICE_ID', 'Malay_male_1_v1')
+    MINIMAX_TTS_VOICE_ID = os.environ.get('MINIMAX_TTS_VOICE_ID', 'moss_audio_9f7e9928-140b-11f1-bd2a-3a1ec25b94c4')
     MINIMAX_TTS_LANGUAGE = os.environ.get('MINIMAX_TTS_LANGUAGE', 'ms')  # Malay language code
     
     # System prompt for the AI receptionist
@@ -503,9 +503,9 @@ class MiniMaxTTSService:
             "output_format": "url",
             "voice_setting": {
                 "voice_id": self.voice_id,
-                "speed": 1.2,
+                "speed": 1.3,
                 "vol": 1.0,
-                "pitch": -1
+                "pitch": 0
             },
             "audio_setting": {
                 "sample_rate": 32000,
