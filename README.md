@@ -93,7 +93,7 @@ AI_Receptionist/
 | Variable | Required | Default | Description |
 |----------|----------|---------|-------------|
 | `OPENROUTER_API_KEY` | Yes | - | Your OpenRouter API key |
-| `MODEL_NAME` | No | `qwen/qwen3.5-plus-02-15` | LLM model to use |
+| `MODEL_NAME` | No | `minimax/minimax-m2.5` | LLM model to use |
 | `FLASK_DEBUG` | No | `False` | Enable debug mode |
 | `PORT` | No | `5000` | Server port |
 | `SECRET_KEY` | No | Random | Flask secret key |
@@ -101,7 +101,7 @@ AI_Receptionist/
 | `MAX_MESSAGES_CONTEXT` | No | `10` | Messages to keep in context |
 | `RATE_LIMIT` | No | `30` | Requests per minute per IP |
 | `MINIMAX_API_KEY` | No | - | MiniMax API key for TTS |
-| `MINIMAX_TTS_MODEL` | No | `speech-2.6-turbo` | TTS model |
+| `MINIMAX_TTS_MODEL` | No | `speech-2.8-turbo` | TTS model |
 | `MINIMAX_TTS_VOICE_ID` | No | (varies) | Voice ID for TTS |
 | `MINIMAX_TTS_LANGUAGE` | No | `ms` | TTS language (ms=Malay) |
 

@@ -13,7 +13,8 @@
     --card-foreground: 210 40% 98%;
     --popover: 222 33% 12%;
     --popover-foreground: 210 40% 98%;
-    --primary: 183 100% 35%; /* #00ADB5 */
+    --primary: 183 100% 35%;
+    /* #00ADB5 */
     --primary-foreground: 222 40% 8%;
     --secondary: 215 25% 20%;
     --secondary-foreground: 210 40% 98%;
@@ -26,20 +27,20 @@
     --border: 215 25% 25%;
     --input: 215 25% 20%;
     --ring: 183 100% 35%;
-    
+
     /* Radius */
     --radius: 0.5rem;
-    
+
     /* Spacing */
     --spacing-xs: 0.25rem;
     --spacing-sm: 0.5rem;
     --spacing-md: 1rem;
     --spacing-lg: 1.5rem;
     --spacing-xl: 2rem;
-    
+
     /* Transitions */
     --transition-all: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-    
+
     /* Shadows */
     --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
     --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
@@ -49,7 +50,9 @@
 }
 
 /* Reset & Base */
-*, *::before, *::after {
+*,
+*::before,
+*::after {
     box-sizing: border-box;
     margin: 0;
     padding: 0;
@@ -59,7 +62,7 @@ html {
     font-size: 16px;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-    
+
     /* Firefox scrollbar */
     scrollbar-width: thin;
     scrollbar-color: hsl(var(--primary) / 0.5) hsl(var(--secondary));
@@ -110,7 +113,7 @@ body {
 .app-container {
     display: flex;
     min-height: 100vh;
-    background: 
+    background:
         radial-gradient(ellipse at 0% 0%, rgba(0, 173, 181, 0.08) 0%, transparent 50%),
         radial-gradient(ellipse at 100% 100%, rgba(57, 62, 70, 0.15) 0%, transparent 50%),
         hsl(var(--background));
@@ -296,21 +299,44 @@ body {
 
 /* Different colors for each button */
 .quick-btn:nth-child(1) .btn-icon i,
-.quick-btn:nth-child(1) .btn-icon svg { color: #00ADB5; }
+.quick-btn:nth-child(1) .btn-icon svg {
+    color: #00ADB5;
+}
+
 .quick-btn:nth-child(2) .btn-icon i,
-.quick-btn:nth-child(2) .btn-icon svg { color: #FF6B6B; }
+.quick-btn:nth-child(2) .btn-icon svg {
+    color: #FF6B6B;
+}
+
 .quick-btn:nth-child(3) .btn-icon i,
-.quick-btn:nth-child(3) .btn-icon svg { color: #4ECDC4; }
+.quick-btn:nth-child(3) .btn-icon svg {
+    color: #4ECDC4;
+}
+
 .quick-btn:nth-child(4) .btn-icon i,
-.quick-btn:nth-child(4) .btn-icon svg { color: #FFE66D; }
+.quick-btn:nth-child(4) .btn-icon svg {
+    color: #FFE66D;
+}
+
 .quick-btn:nth-child(5) .btn-icon i,
-.quick-btn:nth-child(5) .btn-icon svg { color: #95E1D3; }
+.quick-btn:nth-child(5) .btn-icon svg {
+    color: #95E1D3;
+}
+
 .quick-btn:nth-child(6) .btn-icon i,
-.quick-btn:nth-child(6) .btn-icon svg { color: #F38181; }
+.quick-btn:nth-child(6) .btn-icon svg {
+    color: #F38181;
+}
+
 .quick-btn:nth-child(7) .btn-icon i,
-.quick-btn:nth-child(7) .btn-icon svg { color: #AA96DA; }
+.quick-btn:nth-child(7) .btn-icon svg {
+    color: #AA96DA;
+}
+
 .quick-btn:nth-child(8) .btn-icon i,
-.quick-btn:nth-child(8) .btn-icon svg { color: #FCBAD3; }
+.quick-btn:nth-child(8) .btn-icon svg {
+    color: #FCBAD3;
+}
 
 .quick-btn:hover .btn-icon i,
 .quick-btn:hover .btn-icon svg {
@@ -433,8 +459,15 @@ body {
 }
 
 @keyframes pulse {
-    0%, 100% { opacity: 1; }
-    50% { opacity: 0.5; }
+
+    0%,
+    100% {
+        opacity: 1;
+    }
+
+    50% {
+        opacity: 0.5;
+    }
 }
 
 .status-indicator.error .status-dot {
@@ -510,6 +543,7 @@ body {
         opacity: 0;
         transform: translateY(10px);
     }
+
     to {
         opacity: 1;
         transform: translateY(0);
@@ -604,8 +638,20 @@ body {
 }
 
 .markdown-content li {
-    margin-bottom: var(--spacing-xs);
+    margin-bottom: 4px;
     color: hsl(var(--foreground));
+    line-height: 1.5;
+}
+
+/* Fix: Remove extra margins from paragraphs inside list items */
+.markdown-content li p {
+    margin: 0;
+    display: inline;
+}
+
+/* Fix: Remove extra spacing between consecutive list items */
+.markdown-content li+li {
+    margin-top: 4px;
 }
 
 .markdown-content h1,
@@ -794,6 +840,22 @@ body {
     background: hsl(var(--secondary) / 0.3);
 }
 
+/* Lists */
+.markdown-content ul {
+    margin: var(--spacing-xs) 0;
+    padding-left: 1.5em;
+}
+
+.markdown-content li {
+    margin: 2px 0;
+    padding: 0;
+    line-height: 1.5;
+}
+
+.markdown-content li+li {
+    margin-top: 2px;
+}
+
 /* Horizontal Rule */
 .markdown-content hr {
     border: none;
@@ -896,8 +958,13 @@ body {
 }
 
 @keyframes spin {
-    from { transform: rotate(0deg); }
-    to { transform: rotate(360deg); }
+    from {
+        transform: rotate(0deg);
+    }
+
+    to {
+        transform: rotate(360deg);
+    }
 }
 
 /* Error Message */
@@ -927,13 +994,29 @@ body {
     animation: bounce 1.4s ease-in-out infinite;
 }
 
-.typing-indicator span:nth-child(1) { animation-delay: 0s; }
-.typing-indicator span:nth-child(2) { animation-delay: 0.2s; }
-.typing-indicator span:nth-child(3) { animation-delay: 0.4s; }
+.typing-indicator span:nth-child(1) {
+    animation-delay: 0s;
+}
+
+.typing-indicator span:nth-child(2) {
+    animation-delay: 0.2s;
+}
+
+.typing-indicator span:nth-child(3) {
+    animation-delay: 0.4s;
+}
 
 @keyframes bounce {
-    0%, 60%, 100% { transform: translateY(0); }
-    30% { transform: translateY(-8px); }
+
+    0%,
+    60%,
+    100% {
+        transform: translateY(0);
+    }
+
+    30% {
+        transform: translateY(-8px);
+    }
 }
 
 /* Chat Input */
@@ -1022,7 +1105,7 @@ body {
         width: 280px;
         min-width: 260px;
     }
-    
+
     .message {
         max-width: 85%;
     }
@@ -1032,7 +1115,7 @@ body {
     .app-container {
         flex-direction: column;
     }
-    
+
     .sidebar {
         width: 100%;
         height: auto;
@@ -1041,32 +1124,32 @@ body {
         border-right: none;
         border-bottom: 1px solid hsl(var(--border));
     }
-    
+
     .button-grid {
         grid-template-columns: repeat(4, 1fr);
     }
-    
+
     .quick-btn {
         padding: var(--spacing-md) var(--spacing-sm);
     }
-    
+
     .btn-icon {
         font-size: 22px;
     }
-    
+
     .btn-label {
         font-size: 0.6875rem;
     }
-    
+
     .chat-area {
         height: auto;
         min-height: 50vh;
     }
-    
+
     .chat-messages {
         padding: var(--spacing-md);
     }
-    
+
     .message {
         max-width: 90%;
     }
@@ -1076,34 +1159,34 @@ body {
     .button-grid {
         grid-template-columns: repeat(2, 1fr);
     }
-    
+
     .sidebar-header {
         padding: var(--spacing-md);
     }
-    
+
     .logo-icon {
         width: 40px;
         height: 40px;
         font-size: 20px;
     }
-    
+
     .logo h1 {
         font-size: 1rem;
     }
-    
+
     .tagline {
         padding-left: 52px;
         font-size: 0.75rem;
     }
-    
+
     .chat-header {
         padding: var(--spacing-sm) var(--spacing-md);
     }
-    
+
     .chat-input-area {
         padding: var(--spacing-md);
     }
-    
+
     .message-content {
         padding: var(--spacing-sm) var(--spacing-md);
     }
@@ -1140,4 +1223,111 @@ input:focus-visible {
 ::selection {
     background: hsl(var(--primary) / 0.3);
     color: hsl(var(--foreground));
+}
+
+/* ============================================================================
+   Reasoning / Thinking Section
+   ============================================================================ */
+.reasoning-section {
+    margin-bottom: var(--spacing-sm);
+    border: 1px solid hsl(var(--primary) / 0.2);
+    border-radius: var(--radius);
+    overflow: hidden;
+    background: hsl(var(--background) / 0.5);
+}
+
+/* Streaming state: compact scrollable box while AI is thinking live */
+.reasoning-section.streaming .reasoning-content {
+    max-height: 120px;
+    overflow-y: auto;
+    padding: var(--spacing-sm) var(--spacing-md);
+}
+
+.reasoning-section.streaming .reasoning-header {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+    padding: var(--spacing-xs) var(--spacing-md);
+    font-size: 0.75rem;
+    color: hsl(var(--primary));
+    background: hsl(var(--primary) / 0.05);
+    border-bottom: 1px solid hsl(var(--primary) / 0.15);
+}
+
+.streaming-indicator {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: hsl(var(--primary));
+    animation: pulse 1s ease-in-out infinite;
+    margin-left: auto;
+}
+
+/* Completed/collapsed state toggle button */
+.reasoning-toggle {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+    width: 100%;
+    padding: var(--spacing-xs) var(--spacing-md);
+    background: hsl(var(--primary) / 0.05);
+    border: none;
+    border-bottom: 1px solid transparent;
+    color: hsl(var(--primary));
+    font-size: 0.75rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: var(--transition-all);
+    text-align: left;
+}
+
+.reasoning-toggle:hover {
+    background: hsl(var(--primary) / 0.1);
+}
+
+.reasoning-toggle .chevron {
+    margin-left: auto;
+    transition: transform 0.2s ease;
+}
+
+.reasoning-toggle.expanded .chevron {
+    transform: rotate(180deg);
+}
+
+.reasoning-toggle.expanded {
+    border-bottom-color: hsl(var(--primary) / 0.15);
+}
+
+/* Collapsed content — hidden by default after thinking completes */
+.reasoning-content {
+    display: none;
+    max-height: 200px;
+    overflow-y: auto;
+}
+
+.reasoning-content.visible {
+    display: block;
+}
+
+.reasoning-content pre {
+    margin: 0;
+    padding: var(--spacing-sm) var(--spacing-md);
+    font-size: 0.7rem;
+    color: hsl(var(--muted-foreground));
+    white-space: pre-wrap;
+    word-break: break-word;
+    font-family: 'Inter', sans-serif;
+    line-height: 1.5;
+}
+
+/* Custom scrollbar for reasoning box */
+.reasoning-content::-webkit-scrollbar,
+.reasoning-section.streaming .reasoning-content::-webkit-scrollbar {
+    width: 4px;
+}
+
+.reasoning-content::-webkit-scrollbar-thumb,
+.reasoning-section.streaming .reasoning-content::-webkit-scrollbar-thumb {
+    background: hsl(var(--primary) / 0.3);
+    border-radius: 2px;
 }

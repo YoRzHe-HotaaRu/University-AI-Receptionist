@@ -4,7 +4,7 @@
  * Premium UI with shadcn/ui-inspired design
  */
 
-(function() {
+(function () {
     'use strict';
 
     // =========================================================================
@@ -52,7 +52,7 @@
     // =========================================================================
     // Auto-scroll Detection
     // =========================================================================
-    
+
     /**
      * Check if user is near bottom of chat
      * @returns {boolean} True if near bottom
@@ -62,7 +62,7 @@
         const threshold = 100; // pixels from bottom
         return container.scrollHeight - container.scrollTop - container.clientHeight < threshold;
     }
-    
+
     /**
      * Smart scroll to bottom - only if auto-scroll is enabled
      */
@@ -71,7 +71,7 @@
             elements.chatMessages.scrollTop = elements.chatMessages.scrollHeight;
         }
     }
-    
+
     // Detect user scroll to disable auto-scroll
     elements.chatMessages.addEventListener('scroll', () => {
         if (!isNearBottom()) {
@@ -82,7 +82,7 @@
             autoScrollEnabled = true;
         }
     });
-    
+
     // Re-enable auto-scroll when user sends a new message
     elements.messageInput.addEventListener('focus', () => {
         autoScrollEnabled = true;
@@ -126,13 +126,13 @@
     function updateStatus(status, text) {
         const indicator = elements.statusIndicator;
         indicator.className = 'status-indicator';
-        
+
         if (status === 'loading') {
             indicator.classList.add('loading');
         } else if (status === 'error') {
             indicator.classList.add('error');
         }
-        
+
         indicator.querySelector('.status-text').textContent = text;
     }
 
@@ -169,59 +169,59 @@
      */
     function parseMarkdown(text) {
         if (!text) return '';
-        
+
         let html = text;
-        
+
         // Code blocks (```code```)
         html = html.replace(/```([\s\S]*?)```/g, '<pre><code>$1</code></pre>');
-        
+
         // Inline code (`code`)
         html = html.replace(/`([^`]+)`/g, '<code>$1</code>');
-        
+
         // Bold (**text**)
         html = html.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
-        
+
         // Italic (*text*)
         html = html.replace(/\*([^*]+)\*/g, '<em>$1</em>');
-        
+
         // Strikethrough (~~text~~)
         html = html.replace(/~~([^~]+)~~/g, '<del>$1</del>');
-        
+
         // Headers
         html = html.replace(/^### (.+)$/gm, '<h4>$1</h4>');
         html = html.replace(/^## (.+)$/gm, '<h3>$1</h3>');
         html = html.replace(/^# (.+)$/gm, '<h2>$1</h2>');
-        
+
         // Blockquotes (> text)
         html = html.replace(/^> (.+)$/gm, '<blockquote>$1</blockquote>');
-        
+
         // Horizontal rule
         html = html.replace(/^---$/gm, '<hr>');
-        
+
         // Links [text](url)
         html = html.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2" target="_blank">$1</a>');
-        
+
         // Tables - handle markdown tables
         const lines = html.split('\n');
         let inTable = false;
         let tableContent = [];
         let newHtml = '';
-        
+
         lines.forEach((line, index) => {
             // Check if this is a table row
             if (line.trim().startsWith('|') && line.includes('|')) {
                 const trimmedLine = line.trim();
-                
+
                 // Check if this is a separator row (contains only -, :, |, and spaces)
                 const isSeparator = /^\|?\s*[-:\s]+\s*(\|\s*[-:\s]+)*\|?\s*$/.test(trimmedLine.replace(/\|/g, '').trim());
-                
+
                 if (isSeparator) {
                     // Skip separator rows
                     return;
                 }
-                
+
                 const nextLine = lines[index + 1] || '';
-                
+
                 // Check if next line is a table separator (contains ---)
                 if (nextLine.includes('---')) {
                     if (!inTable) {
@@ -265,7 +265,7 @@
                 newHtml += line + (index < lines.length - 1 ? '\n' : '');
             }
         });
-        
+
         // Handle any remaining table at end
         if (inTable && tableContent.length > 0) {
             newHtml += '<table>';
@@ -286,24 +286,36 @@
             });
             newHtml += '</tbody></table>';
         }
-        
+
         html = newHtml || html;
-        
+
+        // Collapse blank lines between consecutive list items so they merge into one list
+        // e.g. "- A\n\n- B" → "- A\n- B"
+        html = html.replace(/(^- .+$)\n\n(?=- )/gm, '$1\n');
+
         // Unordered lists (- item)
         html = html.replace(/^- (.+)$/gm, '<li>$1</li>');
-        
+
         // Convert consecutive li to ul
-        html = html.replace(/(<li>.*?<\/li>)+/g, function(match) {
+        html = html.replace(/(<li>.*?<\/li>)+/g, function (match) {
             return '<ul>' + match + '</ul>';
         });
-        
+
         // Task lists (- [ ] or - [x])
         html = html.replace(/- \[ \] (.+)/g, '<input type="checkbox" disabled> $1');
         html = html.replace(/- \[x\] (.+)/g, '<input type="checkbox" checked disabled> $1');
-        
-        // Line breaks to paragraphs
-        html = html.split('\n\n').map(p => p.trim()).filter(p => p).map(p => '<p>' + p.replace(/\n/g, '<br>') + '</p>').join('');
-        
+
+        // Line breaks to paragraphs (but not for lists)
+        html = html.split('\n\n').map(p => {
+            p = p.trim();
+            if (!p) return '';
+            // Don't wrap lists in paragraphs
+            if (p.startsWith('<ul>') || p.startsWith('<ol>') || p.startsWith('<li>')) {
+                return p;
+            }
+            return '<p>' + p.replace(/\n/g, '<br>') + '</p>';
+        }).filter(p => p).join('');
+
         return html;
     }
 
@@ -319,7 +331,7 @@
     function appendUserMessage(text, timestamp) {
         const messageDiv = document.createElement('div');
         messageDiv.className = 'message user-message';
-        
+
         messageDiv.innerHTML = `
             <div class="message-avatar">
                 <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -332,7 +344,7 @@
                 <span class="message-time">${formatTime(timestamp)}</span>
             </div>
         `;
-        
+
         elements.chatMessages.appendChild(messageDiv);
         scrollToBottom();
     }
@@ -346,10 +358,10 @@
     function appendAiMessage(text, timestamp, reasoning = '') {
         const messageDiv = document.createElement('div');
         messageDiv.className = 'message ai-message';
-        
+
         // Parse markdown
         const formattedText = parseMarkdown(text);
-        
+
         // Build reasoning section if present
         let reasoningHtml = '';
         if (reasoning && reasoning.trim()) {
@@ -373,7 +385,7 @@
                 </div>
             `;
         }
-        
+
         messageDiv.innerHTML = `
             <div class="message-avatar">
                 <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -393,11 +405,11 @@
                 <span class="message-time">${formatTime(timestamp)}</span>
             </div>
         `;
-        
+
         elements.chatMessages.appendChild(messageDiv);
         scrollToBottom();
     }
-    
+
     /**
      * Create a streaming AI message container for real-time updates
      * @returns {Object} Object with messageDiv, updateReasoning, updateContent, finalize
@@ -405,7 +417,7 @@
     function createStreamingAiMessage() {
         const messageDiv = document.createElement('div');
         messageDiv.className = 'message ai-message';
-        
+
         messageDiv.innerHTML = `
             <div class="message-avatar">
                 <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -438,16 +450,16 @@
                 <span class="message-time"></span>
             </div>
         `;
-        
+
         elements.chatMessages.appendChild(messageDiv);
         scrollToBottom();
-        
+
         const reasoningPre = messageDiv.querySelector('.reasoning-section pre');
         const reasoningSection = messageDiv.querySelector('.reasoning-section');
         const reasoningHeader = messageDiv.querySelector('.reasoning-header');
         const contentDiv = messageDiv.querySelector('.markdown-content');
         const timeSpan = messageDiv.querySelector('.message-time');
-        
+
         return {
             messageDiv,
             updateReasoning: (text) => {
@@ -458,7 +470,7 @@
                 reasoningSection.classList.add('completed');
                 // Get the reasoning content before restructuring
                 const reasoningText = reasoningPre.textContent;
-                
+
                 // Restructure: header becomes clickable toggle, content is separate and hidden by default
                 reasoningSection.innerHTML = `
                     <button class="reasoning-toggle">
@@ -476,7 +488,7 @@
                         <pre>${escapeHtml(reasoningText)}</pre>
                     </div>
                 `;
-                
+
                 // Add click event listener to the new toggle button
                 const newToggle = reasoningSection.querySelector('.reasoning-toggle');
                 const newContent = reasoningSection.querySelector('.reasoning-content');
@@ -484,7 +496,7 @@
                     newToggle.classList.toggle('expanded');
                     newContent.classList.toggle('visible');
                 });
-                
+
                 // Show the answer content
                 contentDiv.style.display = 'block';
                 smartScrollToBottom();
@@ -501,7 +513,7 @@
             }
         };
     }
-    
+
     /**
      * Auto-play TTS for a given text (used when toggle is enabled).
      * Optimized for low latency - starts fetching immediately and plays as soon as ready.
@@ -620,7 +632,7 @@
     function appendErrorMessage(errorMessage) {
         const messageDiv = document.createElement('div');
         messageDiv.className = 'message ai-message error-message';
-        
+
         messageDiv.innerHTML = `
             <div class="message-avatar">
                 <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -634,7 +646,7 @@
                 <span class="message-time">${formatTime(new Date().toISOString())}</span>
             </div>
         `;
-        
+
         elements.chatMessages.appendChild(messageDiv);
         scrollToBottom();
     }
@@ -710,7 +722,7 @@
                 if (line.startsWith('data: ')) {
                     try {
                         const chunk = JSON.parse(line.slice(6));
-                        
+
                         if (chunk.type === 'reasoning') {
                             fullReasoning += chunk.data;
                             onChunk({ type: 'reasoning', data: chunk.data });
@@ -780,11 +792,11 @@
      */
     async function handleFormSubmit(event) {
         event.preventDefault();
-        
+
         if (isProcessing) return;
-        
+
         const message = elements.messageInput.value.trim();
-        
+
         if (!message) {
             elements.messageInput.focus();
             return;
@@ -792,26 +804,26 @@
 
         isProcessing = true;
         updateStatus('loading', 'Processing...');
-        
+
         // Disable input
         elements.messageInput.disabled = true;
         elements.sendButton.disabled = true;
-        
+
         // Re-enable auto-scroll when user sends a message
         autoScrollEnabled = true;
         userScrolled = false;
-        
+
         // Add user message to chat
         const timestamp = new Date().toISOString();
         appendUserMessage(message, timestamp);
-        
+
         // Clear input
         elements.messageInput.value = '';
-        
+
         // Create streaming message container immediately (no typing indicator)
         const streamingMsg = createStreamingAiMessage();
         let hasReceivedContent = false;
-        
+
         try {
             // Use streaming API for real-time reasoning display
             const result = await sendChatMessageStreaming(message, (chunk) => {
@@ -832,7 +844,7 @@
                 // Finalize the message
                 streamingMsg.finalize(result.timestamp);
                 updateStatus('ready', 'Ready');
-                
+
                 // Start TTS after streaming completes
                 if (ttsEnabled) {
                     playTTSAuto(result.response).catch(err => console.error('TTS error:', err));
@@ -862,18 +874,18 @@
     async function handleQuickButtonClick(event) {
         const button = event.currentTarget;
         const prompt = button.dataset.prompt;
-        
+
         if (!prompt || isProcessing) return;
-        
+
         // Visual feedback
         button.style.transform = 'scale(0.95)';
         setTimeout(() => {
             button.style.transform = '';
         }, 150);
-        
+
         // Update input value
         elements.messageInput.value = prompt;
-        
+
         // Trigger form submission
         await handleFormSubmit(new Event('submit'));
     }
@@ -884,22 +896,22 @@
      */
     async function handleResetClick(event) {
         event.preventDefault();
-        
+
         if (isProcessing) return;
-        
+
         const confirmed = confirm('Are you sure you want to start a new conversation?');
-        
+
         if (!confirmed) return;
-        
+
         isProcessing = true;
         updateStatus('loading', 'Resetting...');
-        
+
         try {
             await resetConversation();
-            
+
             // Clear chat messages
             elements.chatMessages.innerHTML = '';
-            
+
             // Add welcome message
             const welcomeMessage = document.createElement('div');
             welcomeMessage.className = 'message ai-message';
@@ -923,7 +935,7 @@
                 </div>
             `;
             elements.chatMessages.appendChild(welcomeMessage);
-            
+
             updateStatus('ready', 'Ready');
         } catch (error) {
             console.error('Reset error:', error);
@@ -945,7 +957,7 @@
     async function init() {
         // Check API health
         const health = await checkHealth();
-        
+
         if (health.status === 'unhealthy') {
             console.warn('API health check failed');
             updateStatus('error', 'API Unavailable');
@@ -954,16 +966,16 @@
         } else {
             updateStatus('error', 'API Key Missing');
         }
-        
+
         // Set up event listeners
         elements.chatForm.addEventListener('submit', handleFormSubmit);
-        
+
         elements.quickButtons.forEach(button => {
             button.addEventListener('click', handleQuickButtonClick);
         });
-        
+
         elements.resetButton.addEventListener('click', handleResetClick);
-        
+
         // Set up TTS toggle
         elements.ttsToggleBtn.addEventListener('click', toggleTTS);
 
@@ -974,10 +986,10 @@
                 handleFormSubmit(event);
             }
         });
-        
+
         // Focus input on load
         elements.messageInput.focus();
-        
+
         console.log('University AI Receptionist initialized');
     }
 

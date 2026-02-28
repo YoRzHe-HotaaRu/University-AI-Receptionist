@@ -103,7 +103,7 @@ class Config:
     OPENROUTER_API_KEY = os.environ.get('OPENROUTER_API_KEY', '')
     OPENROUTER_API_URL = os.environ.get('OPENROUTER_API_URL', 
         'https://openrouter.ai/api/v1/chat/completions')
-    MODEL_NAME = os.environ.get('MODEL_NAME', 'qwen/qwen3.5-plus-02-15')
+    MODEL_NAME = os.environ.get('MODEL_NAME', 'minimax/minimax-m2.5')
     MEMORY_DIR = Path(os.environ.get('MEMORY_DIR', 'memory'))
     MAX_MESSAGE_LENGTH = int(os.environ.get('MAX_MESSAGE_LENGTH', '1000'))
     MAX_MESSAGES_CONTEXT = int(os.environ.get('MAX_MESSAGES_CONTEXT', '10'))
@@ -111,13 +111,13 @@ class Config:
     
     # MiniMax TTS Configuration
     MINIMAX_API_KEY = os.environ.get('MINIMAX_API_KEY', '')
-    MINIMAX_TTS_MODEL = os.environ.get('MINIMAX_TTS_MODEL', 'speech-2.6-turbo')
+    MINIMAX_TTS_MODEL = os.environ.get('MINIMAX_TTS_MODEL', 'speech-2.8-turbo')
     MINIMAX_TTS_VOICE_ID = os.environ.get('MINIMAX_TTS_VOICE_ID', 'moss_audio_9f7e9928-140b-11f1-bd2a-3a1ec25b94c4')
     MINIMAX_TTS_LANGUAGE = os.environ.get('MINIMAX_TTS_LANGUAGE', 'ms')  # Malay language code
     
     # System prompt for the AI receptionist
     SYSTEM_PROMPT = """You are a friendly and helpful AI receptionist for UiTM (Universiti Teknologi MARA), a Malaysian university. 
-You provide accurate information about UiTM university including admissions, 
+You provide accurate information about UITM university including admissions, 
 tuition, programs, campus location, hours of operation, and frequently asked questions.
 
 IMPORTANT: You MUST respond in Bahasa Malaysia (Malay language) for ALL responses.
@@ -434,8 +434,8 @@ class OpenRouterService:
             "model": self.model,
             "messages": messages,
             "temperature": 0.7,
-            "max_tokens": 500
-            # Note: reasoning disabled for faster responses
+            "max_tokens": 1000,
+            "reasoning": {"enabled": True}
         }
         
         try:
@@ -514,9 +514,9 @@ class OpenRouterService:
             "model": self.model,
             "messages": messages,
             "temperature": 0.7,
-            "max_tokens": 500,
-            "stream": True  # Enable streaming
-            # Note: reasoning disabled for faster responses
+            "max_tokens": 1000,
+            "stream": True,
+            "reasoning": {"enabled": True}
         }
         
         try:
