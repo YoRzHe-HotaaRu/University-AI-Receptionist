@@ -101,7 +101,7 @@ AI_Receptionist/
 | `MAX_MESSAGES_CONTEXT` | No | `10` | Messages to keep in context |
 | `RATE_LIMIT` | No | `30` | Requests per minute per IP |
 | `MINIMAX_API_KEY` | No | - | MiniMax API key for TTS |
-| `MINIMAX_TTS_MODEL` | No | `speech-2.8-turbo` | TTS model |
+| `MINIMAX_TTS_MODEL` | No | `speech-2.6-turbo` | TTS model |
 | `MINIMAX_TTS_VOICE_ID` | No | (varies) | Voice ID for TTS |
 | `MINIMAX_TTS_LANGUAGE` | No | `ms` | TTS language (ms=Malay) |
 

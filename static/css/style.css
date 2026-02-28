@@ -59,6 +59,43 @@ html {
     font-size: 16px;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    
+    /* Firefox scrollbar */
+    scrollbar-width: thin;
+    scrollbar-color: hsl(var(--primary) / 0.5) hsl(var(--secondary));
+}
+
+/* Webkit Scrollbar (Chrome, Safari, Edge) */
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: hsl(var(--secondary) / 0.5);
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb {
+    background: hsl(var(--primary) / 0.5);
+    border-radius: 4px;
+    border: 2px solid transparent;
+    background-clip: padding-box;
+    transition: background 0.2s ease;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: hsl(var(--primary) / 0.8);
+    border: 2px solid transparent;
+    background-clip: padding-box;
+}
+
+::-webkit-scrollbar-thumb:active {
+    background: hsl(var(--primary));
+}
+
+::-webkit-scrollbar-corner {
+    background: hsl(var(--secondary) / 0.5);
 }
 
 body {
@@ -434,12 +471,30 @@ body {
 }
 
 .chat-messages::-webkit-scrollbar-thumb {
-    background: hsl(var(--border));
+    background: hsl(var(--primary) / 0.4);
     border-radius: 3px;
 }
 
 .chat-messages::-webkit-scrollbar-thumb:hover {
-    background: hsl(var(--primary) / 0.5);
+    background: hsl(var(--primary) / 0.7);
+}
+
+/* Sidebar Custom Scrollbar */
+.sidebar::-webkit-scrollbar {
+    width: 6px;
+}
+
+.sidebar::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.sidebar::-webkit-scrollbar-thumb {
+    background: hsl(var(--primary) / 0.4);
+    border-radius: 3px;
+}
+
+.sidebar::-webkit-scrollbar-thumb:hover {
+    background: hsl(var(--primary) / 0.7);
 }
 
 /* Message Bubbles */
@@ -598,6 +653,120 @@ body {
     margin: var(--spacing-sm) 0;
     color: hsl(var(--muted-foreground));
     font-style: italic;
+}
+
+/* Reasoning Section */
+.reasoning-section {
+    margin-bottom: var(--spacing-md);
+    border: 1px solid hsl(var(--border));
+    border-radius: var(--radius);
+    background: hsl(var(--secondary) / 0.5);
+    overflow: hidden;
+}
+
+.reasoning-toggle {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+    padding: var(--spacing-sm) var(--spacing-md);
+    background: hsl(var(--secondary));
+    border: none;
+    color: hsl(var(--muted-foreground));
+    font-size: 0.8125rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: var(--transition-all);
+    text-align: left;
+}
+
+.reasoning-toggle:hover {
+    background: hsl(var(--secondary) / 0.8);
+    color: hsl(var(--primary));
+}
+
+.reasoning-toggle svg {
+    flex-shrink: 0;
+}
+
+.reasoning-toggle .chevron {
+    margin-left: auto;
+    transition: transform 0.2s ease;
+}
+
+.reasoning-toggle.expanded .chevron {
+    transform: rotate(180deg);
+}
+
+.reasoning-content {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease;
+}
+
+.reasoning-content.visible {
+    max-height: 500px;
+    overflow-y: auto;
+}
+
+.reasoning-content pre {
+    padding: var(--spacing-md);
+    margin: 0;
+    font-size: 0.8125rem;
+    line-height: 1.6;
+    color: hsl(var(--muted-foreground));
+    background: transparent;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+}
+
+/* Streaming Reasoning Styles */
+.reasoning-section.streaming {
+    background: hsl(var(--secondary));
+}
+
+.reasoning-header {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+    padding: var(--spacing-sm) var(--spacing-md);
+    color: hsl(var(--primary));
+    font-size: 0.8125rem;
+    font-weight: 500;
+}
+
+.reasoning-header svg {
+    flex-shrink: 0;
+}
+
+.streaming-indicator {
+    display: inline-block;
+    width: 6px;
+    height: 6px;
+    background: hsl(var(--primary));
+    border-radius: 50%;
+    margin-left: var(--spacing-xs);
+    animation: pulse 1.5s ease-in-out infinite;
+}
+
+.reasoning-section.streaming .reasoning-content {
+    max-height: 200px;
+    overflow-y: auto;
+}
+
+/* Completed state - hide content by default */
+.reasoning-section.completed {
+    background: hsl(var(--secondary) / 0.5);
+}
+
+.reasoning-section.completed .reasoning-content {
+    max-height: 0;
+    overflow: hidden;
+}
+
+.reasoning-section.completed .reasoning-content.visible {
+    max-height: 500px;
+    overflow-y: auto;
 }
 
 /* Tables */

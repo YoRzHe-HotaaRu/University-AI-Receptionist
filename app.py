@@ -14,6 +14,7 @@ from pathlib import Path
 from typing import Dict, List, Optional, Any
 from functools import wraps
 import time
+import threading
 
 # Load environment variables from .env file
 from dotenv import load_dotenv
@@ -21,7 +22,7 @@ from dotenv import load_dotenv
 # Load .env file if it exists
 load_dotenv()
 
-from flask import Flask, render_template, request, jsonify, session, make_response
+from flask import Flask, render_template, request, jsonify, session, make_response, Response, stream_with_context
 from flask_cors import CORS, cross_origin
 import requests
 
@@ -110,7 +111,7 @@ class Config:
     
     # MiniMax TTS Configuration
     MINIMAX_API_KEY = os.environ.get('MINIMAX_API_KEY', '')
-    MINIMAX_TTS_MODEL = os.environ.get('MINIMAX_TTS_MODEL', 'speech-2.8-turbo')
+    MINIMAX_TTS_MODEL = os.environ.get('MINIMAX_TTS_MODEL', 'speech-2.6-turbo')
     MINIMAX_TTS_VOICE_ID = os.environ.get('MINIMAX_TTS_VOICE_ID', 'moss_audio_9f7e9928-140b-11f1-bd2a-3a1ec25b94c4')
     MINIMAX_TTS_LANGUAGE = os.environ.get('MINIMAX_TTS_LANGUAGE', 'ms')  # Malay language code
     
@@ -121,6 +122,9 @@ tuition, programs, campus location, hours of operation, and frequently asked que
 
 IMPORTANT: You MUST respond in Bahasa Malaysia (Malay language) for ALL responses.
 This is a Malaysian university, so all communication should be in Malay unless the user explicitly asks in English.
+
+CRITICAL: Be BRIEF and DIRECT. Do not overthink or generate long internal monologues. 
+Keep your thinking process concise (1-2 short steps maximum). Respond quickly and naturally.
 
 Be concise, professional, and welcoming. Use the conversation history 
 to provide context-aware responses. If you don't know something, admit it 
@@ -183,11 +187,16 @@ class MemorySystem:
     """
     Manages conversation memory with date-based folder organization.
     Structure: memory/YYYY-MM-DD/conversations.json
+    Includes in-memory cache to reduce disk I/O latency.
     """
     
     def __init__(self, memory_dir: Path):
         self.memory_dir = memory_dir
         self._ensure_memory_dir()
+        # In-memory cache for today's conversations to avoid repeated disk reads
+        self._cache: Dict[str, List[Dict[str, Any]]] = {}
+        self._cache_date: Optional[str] = None
+        self._cache_lock = threading.Lock()
     
     def _ensure_memory_dir(self) -> None:
         """Ensure base memory directory exists."""
@@ -220,6 +229,7 @@ class MemorySystem:
     def load_conversations(self, date: Optional[datetime] = None) -> List[Dict[str, Any]]:
         """
         Load conversations for a specific date.
+        Uses in-memory cache for today's conversations to reduce I/O.
         
         Args:
             date: datetime object, defaults to today
@@ -230,16 +240,32 @@ class MemorySystem:
         if date is None:
             date = datetime.now()
         
+        date_str = date.strftime('%Y-%m-%d')
+        
+        # Check cache for today's conversations
+        with self._cache_lock:
+            if date_str == self._cache_date and date_str in self._cache:
+                logger.debug(f"Returning cached conversations for {date_str}")
+                return self._cache[date_str].copy()
+        
         conversation_file = self._get_conversation_file(date)
         
         if not conversation_file.exists():
-            logger.info(f"No conversation file found for {date.strftime('%Y-%m-%d')}")
+            logger.info(f"No conversation file found for {date_str}")
             return []
         
         try:
             with open(conversation_file, 'r', encoding='utf-8') as f:
                 data = json.load(f)
-                return data.get('messages', [])
+                messages = data.get('messages', [])
+                
+                # Cache today's conversations
+                with self._cache_lock:
+                    if date_str == datetime.now().strftime('%Y-%m-%d'):
+                        self._cache_date = date_str
+                        self._cache[date_str] = messages.copy()
+                
+                return messages
         except json.JSONDecodeError as e:
             logger.error(f"Invalid JSON in conversation file: {e}")
             return []
@@ -251,6 +277,7 @@ class MemorySystem:
                           date: Optional[datetime] = None) -> bool:
         """
         Save conversations for a specific date.
+        Also updates in-memory cache for today's conversations.
         
         Args:
             messages: List of message dictionaries
@@ -262,6 +289,7 @@ class MemorySystem:
         if date is None:
             date = datetime.now()
         
+        date_str = date.strftime('%Y-%m-%d')
         date_folder = self._get_date_folder(date)
         
         try:
@@ -271,26 +299,33 @@ class MemorySystem:
             conversation_file = self._get_conversation_file(date)
             
             data = {
-                'date': date.strftime('%Y-%m-%d'),
+                'date': date_str,
                 'messages': messages
             }
             
             with open(conversation_file, 'w', encoding='utf-8') as f:
                 json.dump(data, f, indent=2, ensure_ascii=False)
             
-            logger.info(f"Conversations saved for {date.strftime('%Y-%m-%d')}")
+            # Update cache for today's conversations
+            with self._cache_lock:
+                if date_str == datetime.now().strftime('%Y-%m-%d'):
+                    self._cache_date = date_str
+                    self._cache[date_str] = messages.copy()
+            
+            logger.info(f"Conversations saved for {date_str}")
             return True
             
         except Exception as e:
             logger.error(f"Error saving conversations: {e}")
             return False
     
-    def load_recent_conversations(self, days: int = 7) -> List[Dict[str, Any]]:
+    def load_recent_conversations(self, days: int = 1) -> List[Dict[str, Any]]:
         """
         Load conversations from recent days for context.
+        Optimized: Only loads 1 day by default to reduce I/O latency.
         
         Args:
-            days: Number of days to look back
+            days: Number of days to look back (default: 1 for speed)
             
         Returns:
             Combined list of recent messages
@@ -400,6 +435,7 @@ class OpenRouterService:
             "messages": messages,
             "temperature": 0.7,
             "max_tokens": 500
+            # Note: reasoning disabled for faster responses
         }
         
         try:
@@ -416,13 +452,16 @@ class OpenRouterService:
             
             result = response.json()
             
-            # Extract assistant's response
+            # Extract assistant's response and reasoning
             if 'choices' in result and len(result['choices']) > 0:
-                assistant_message = result['choices'][0]['message']['content']
+                message = result['choices'][0]['message']
+                assistant_message = message.get('content', '')
+                reasoning = message.get('reasoning', '')  # Extract reasoning if available
                 
                 return {
                     'success': True,
                     'response': assistant_message,
+                    'reasoning': reasoning,
                     'model': self.model,
                     'usage': result.get('usage', {})
                 }
@@ -441,6 +480,87 @@ class OpenRouterService:
             raise APIError("Invalid response from API", 500)
         except Exception as e:
             logger.error(f"Unexpected error in API call: {e}")
+            raise APIError("An unexpected error occurred", 500)
+    
+    def send_message_streaming(self, user_message: str,
+                               conversation_history: List[Dict[str, Any]] = None):
+        """
+        Send message to OpenRouter API and stream the response.
+        Yields chunks of reasoning and content as they arrive.
+        
+        Args:
+            user_message: The user's message
+            conversation_history: Previous conversation messages
+            
+        Yields:
+            Dict with 'type' ('reasoning' or 'content') and 'data' (text chunk)
+        """
+        if not self._validate_api_key():
+            raise APIError("API key not configured. Please set OPENROUTER_API_KEY.", 503)
+        
+        if conversation_history is None:
+            conversation_history = []
+        
+        messages = self._build_messages(user_message, conversation_history)
+        
+        headers = {
+            "Authorization": f"Bearer {self.api_key}",
+            "Content-Type": "application/json",
+            "HTTP-Referer": os.environ.get('HTTP_REFERER', 'http://localhost:5000'),
+            "X-Title": os.environ.get('APP_TITLE', 'University AI Receptionist')
+        }
+        
+        payload = {
+            "model": self.model,
+            "messages": messages,
+            "temperature": 0.7,
+            "max_tokens": 500,
+            "stream": True  # Enable streaming
+            # Note: reasoning disabled for faster responses
+        }
+        
+        try:
+            logger.info(f"Sending streaming request to OpenRouter API with model: {self.model}")
+            
+            response = requests.post(
+                self.api_url,
+                headers=headers,
+                json=payload,
+                timeout=60,
+                stream=True
+            )
+            
+            response.raise_for_status()
+            
+            for line in response.iter_lines():
+                if line:
+                    line = line.decode('utf-8')
+                    if line.startswith('data: '):
+                        data = line[6:]  # Remove 'data: ' prefix
+                        if data == '[DONE]':
+                            break
+                        try:
+                            chunk = json.loads(data)
+                            if 'choices' in chunk and len(chunk['choices']) > 0:
+                                delta = chunk['choices'][0].get('delta', {})
+                                
+                                # Yield reasoning chunks
+                                if 'reasoning' in delta and delta['reasoning']:
+                                    yield {'type': 'reasoning', 'data': delta['reasoning']}
+                                
+                                # Yield content chunks
+                                if 'content' in delta and delta['content']:
+                                    yield {'type': 'content', 'data': delta['content']}
+                        except json.JSONDecodeError:
+                            continue
+            
+            yield {'type': 'done', 'data': ''}
+            
+        except requests.exceptions.Timeout:
+            raise APIError("Request timed out. Please try again.", 504)
+        except requests.exceptions.RequestException as e:
+            raise APIError(f"Failed to connect to API: {str(e)}", 503)
+        except Exception as e:
             raise APIError("An unexpected error occurred", 500)
 
 
@@ -648,6 +768,7 @@ def chat():
         ai_msg = {
             'role': 'assistant',
             'content': result['response'],
+            'reasoning': result.get('reasoning', ''),  # Include reasoning
             'timestamp': timestamp
         }
         
@@ -659,16 +780,23 @@ def chat():
         max_session_messages = Config.MAX_MESSAGES_CONTEXT * 2
         session['current_conversation'] = current_conv[-max_session_messages:]
         
-        # Save to memory if enabled
+        # Save to memory if enabled (async to not block response)
         if use_memory:
-            today_messages = memory_system.load_conversations()
-            today_messages.extend([user_msg, ai_msg])
-            memory_system.save_conversations(today_messages)
+            def save_async():
+                try:
+                    today_messages = memory_system.load_conversations()
+                    today_messages.extend([user_msg, ai_msg])
+                    memory_system.save_conversations(today_messages)
+                except Exception as e:
+                    logger.error(f"Async memory save failed: {e}")
+            
+            threading.Thread(target=save_async, daemon=True).start()
         
         logger.info(f"Chat request processed successfully")
         
         return jsonify({
             'response': result['response'],
+            'reasoning': result.get('reasoning', ''),
             'timestamp': timestamp,
             'success': True
         })
@@ -679,6 +807,114 @@ def chat():
     except Exception as e:
         logger.error(f"Unexpected error in chat endpoint: {e}")
         return jsonify({'error': 'An unexpected error occurred'}), 500
+
+
+@app.route('/api/chat/stream', methods=['POST'])
+@rate_limit(max_requests=30, window_seconds=60)
+def chat_stream():
+    """
+    Handle chat requests with streaming response.
+    Streams reasoning first, then content in real-time.
+    
+    Request JSON:
+        {
+            "message": "user message",
+            "use_memory": true (optional)
+        }
+        
+    Response: Server-Sent Events (SSE) stream
+        data: {"type": "reasoning", "data": "thinking chunk"}
+        data: {"type": "content", "data": "response chunk"}
+        data: {"type": "done", "timestamp": "..."}
+    """
+    def generate():
+        try:
+            # Validate request
+            if not request.is_json:
+                yield f"data: {json.dumps({'type': 'error', 'data': 'Request must be JSON'})}\n\n"
+                return
+            
+            data = request.get_json()
+            
+            # Validate message
+            user_message = data.get('message', '').strip()
+            user_message = sanitize_input(user_message)
+            
+            if not user_message:
+                yield f"data: {json.dumps({'type': 'error', 'data': 'Message cannot be empty'})}\n\n"
+                return
+            
+            if len(user_message) > Config.MAX_MESSAGE_LENGTH:
+                yield f"data: {json.dumps({'type': 'error', 'data': f'Message too long. Maximum {Config.MAX_MESSAGE_LENGTH} characters.'})}\n\n"
+                return
+            
+            # Get conversation history
+            use_memory = data.get('use_memory', True)
+            
+            if use_memory:
+                conversation_history = memory_system.load_recent_conversations()
+            else:
+                conversation_history = session.get('current_conversation', [])
+            
+            # Stream AI response
+            full_response = []
+            full_reasoning = []
+            timestamp = datetime.now().isoformat()
+            
+            for chunk in openrouter_service.send_message_streaming(user_message, conversation_history):
+                if chunk['type'] == 'reasoning':
+                    full_reasoning.append(chunk['data'])
+                    yield f"data: {json.dumps(chunk)}\n\n"
+                elif chunk['type'] == 'content':
+                    full_response.append(chunk['data'])
+                    yield f"data: {json.dumps(chunk)}\n\n"
+                elif chunk['type'] == 'done':
+                    # Save to memory after streaming is complete
+                    if use_memory and full_response:
+                        user_msg = {
+                            'role': 'user',
+                            'content': user_message,
+                            'timestamp': timestamp
+                        }
+                        ai_msg = {
+                            'role': 'assistant',
+                            'content': ''.join(full_response),
+                            'reasoning': ''.join(full_reasoning),
+                            'timestamp': timestamp
+                        }
+                        
+                        # Update session
+                        current_conv = session.get('current_conversation', [])
+                        current_conv.extend([user_msg, ai_msg])
+                        max_session_messages = Config.MAX_MESSAGES_CONTEXT * 2
+                        session['current_conversation'] = current_conv[-max_session_messages:]
+                        
+                        # Async save to memory
+                        def save_async():
+                            try:
+                                today_messages = memory_system.load_conversations()
+                                today_messages.extend([user_msg, ai_msg])
+                                memory_system.save_conversations(today_messages)
+                            except Exception as e:
+                                logger.error(f"Async memory save failed: {e}")
+                        
+                        threading.Thread(target=save_async, daemon=True).start()
+                    
+                    yield f"data: {json.dumps({'type': 'done', 'timestamp': timestamp})}\n\n"
+            
+        except APIError as e:
+            logger.error(f"Streaming API Error: {e.message}")
+            yield f"data: {json.dumps({'type': 'error', 'data': e.message})}\n\n"
+        except Exception as e:
+            logger.error(f"Streaming error: {e}")
+            yield f"data: {json.dumps({'type': 'error', 'data': 'An unexpected error occurred'})}\n\n"
+    
+    return Response(stream_with_context(generate()), 
+                   mimetype='text/event-stream',
+                   headers={
+                       'Cache-Control': 'no-cache',
+                       'X-Accel-Buffering': 'no'
+                   })
 
 
 @app.route('/api/memory', methods=['GET'])
