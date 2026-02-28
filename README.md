@@ -1,8 +1,8 @@
-# 🎓 UITM AI Receptionist
+# 🎓 AI Receptionist
 
-An AI-powered virtual receptionist for UITM (Universiti Teknologi MARA), built with Flask and integrated with OpenRouter's LLM API. Features a modern split-panel interface with quick access buttons, intelligent conversation memory, streaming AI responses with reasoning display, and Text-to-Speech (TTS) with voice cloning support.
+An AI-powered virtual receptionist for University, built with Flask and integrated with OpenRouter's LLM API. Features a modern split-panel interface with quick access buttons, intelligent conversation memory, streaming AI responses with reasoning display, and Text-to-Speech (TTS) with voice cloning support.
 
-![UITM AI Receptionist](https://img.shields.io/badge/Flask-2.3+-black?style=flat&logo=flask)
+![AI Receptionist](https://img.shields.io/badge/Flask-2.3+-black?style=flat&logo=flask)
 ![Python](https://img.shields.io/badge/Python-3.8+-blue?style=flat&logo=python)
 ![License](https://img.shields.io/badge/License-MIT-green)
 
