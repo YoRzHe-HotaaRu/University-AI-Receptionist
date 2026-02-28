@@ -16,6 +16,8 @@ from functools import wraps
 import time
 import threading
 
+from rag import KnowledgeBase
+
 # Load environment variables from .env file
 from dotenv import load_dotenv
 
@@ -384,9 +386,20 @@ class OpenRouterService:
     
     def _build_messages(self, user_message: str, 
                        conversation_history: List[Dict[str, Any]]) -> List[Dict[str, str]]:
-        """Build the messages list for API call."""
+        """Build the messages list for API call with RAG context."""
+        # Search knowledge base for relevant context
+        knowledge_context = knowledge_base.search(user_message)
+        
+        # Build system prompt with optional knowledge injection
+        system_content = Config.SYSTEM_PROMPT
+        if knowledge_context:
+            system_content += (
+                "\n\nMaklumat berkaitan untuk rujukan kamu:\n"
+                + knowledge_context
+            )
+        
         messages = [
-            {"role": "system", "content": Config.SYSTEM_PROMPT}
+            {"role": "system", "content": system_content}
         ]
         
         # Add conversation history
@@ -566,6 +579,9 @@ class OpenRouterService:
 
 # Initialize OpenRouter service
 openrouter_service = OpenRouterService()
+
+# Initialize RAG knowledge base
+knowledge_base = KnowledgeBase()
 
 
 # ============================================================================

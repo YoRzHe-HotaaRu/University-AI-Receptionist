@@ -10,6 +10,7 @@ An AI-powered virtual receptionist for University, built with Flask and integrat
 
 - **Smart Chat Interface**: Split-panel layout with quick access buttons on the left, chat on the right
 - **Quick Access Buttons**: Pre-configured buttons for common queries (Admissions, Tuition, Programs, etc.)
+- **RAG Knowledge Base**: Retrieval-augmented generation from local markdown files — AI answers are grounded in real university data
 - **Streaming Responses**: Real-time AI response streaming with live reasoning/thinking display
 - **AI Reasoning Display**: Expandable "Lihat fikiran AI" panel shows the model's thinking process
 - **Date-Based Memory**: Conversations are stored in organized date folders for easy retrieval
@@ -27,10 +28,19 @@ An AI-powered virtual receptionist for University, built with Flask and integrat
 ```
 AI_Receptionist/
 ├── app.py                    # Flask server with API endpoints
+├── rag.py                    # RAG knowledge retrieval engine
 ├── requirements.txt          # Python dependencies
 ├── .env.example             # Environment variables template
 ├── .env                     # Your local config (gitignored)
 ├── README.md                 # This file
+├── knowledge/                # RAG knowledge base (markdown files)
+│   ├── programs.md          # Courses, faculties, degrees
+│   ├── admissions.md        # Requirements, application process
+│   ├── fees.md              # Tuition, scholarships, payment
+│   ├── campus.md            # Locations, facilities
+│   ├── hours.md             # Operating hours
+│   ├── links.md             # Official URLs, contacts
+│   └── faq.md               # Frequently asked questions
 ├── memory/                   # Conversation memory (auto-created)
 │   └── YYYY-MM-DD/
 │       └── conversations.json
@@ -148,6 +158,40 @@ The following settings are configured in `app.py` under the `synthesize_speech()
 | `vol` | `1.0` | Volume (0.1 – 10.0) |
 | `pitch` | `0` | Pitch adjustment (-12 to 12) |
 | `language_boost` | `Malay` | Language optimization |
+
+## 📚 Knowledge Base (RAG)
+
+The AI uses a lightweight Retrieval-Augmented Generation (RAG) system to ground its answers in real university data.
+
+### How It Works
+
+1. Markdown files in `knowledge/` are split into chunks by `##` headers
+2. When a user asks a question, the most relevant chunks are retrieved using keyword + fuzzy matching
+3. Retrieved chunks are injected into the AI's system prompt as context
+4. Greetings and casual messages skip retrieval (relevance threshold)
+
+### Knowledge Files
+
+| File | Content |
+|------|---------|
+| `programs.md` | Faculties, courses, diplomas, degrees |
+| `admissions.md` | Requirements, application dates, UPU process |
+| `fees.md` | Tuition fees, scholarships, PTPTN, payment methods |
+| `campus.md` | Campus locations, facilities, branches |
+| `hours.md` | Operating hours for offices, library, sports |
+| `links.md` | Official URLs, social media, contact info |
+| `faq.md` | General frequently asked questions |
+
+### Adding / Editing Knowledge
+
+Simply edit the `.md` files in `knowledge/`. The system **auto-detects file changes** and reloads — no server restart needed.
+
+Use `##` headers to create searchable subtopics:
+```markdown
+## Yuran Diploma
+- Anggaran yuran: RM 1,000 - RM 3,000 setahun
+- Yuran pendaftaran: RM 200 - RM 500
+```
 
 ## 💬 Usage
 
