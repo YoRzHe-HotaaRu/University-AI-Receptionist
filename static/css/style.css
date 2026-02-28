@@ -1111,20 +1111,156 @@ body {
     }
 }
 
+/* Mobile Tab Bar — hidden on desktop */
+.mobile-tab-bar {
+    display: none;
+}
+
 @media (max-width: 768px) {
+
+    /* Full-screen panel layout — no scrolling between panels */
     .app-container {
         flex-direction: column;
+        position: relative;
+    }
+
+    /* Both panels fill the screen (minus tab bar height) */
+    .sidebar,
+    .chat-area {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: calc(100vh - 60px);
+        /* leave room for tab bar */
+        border: none;
+        transition: opacity 0.2s ease, visibility 0.2s ease;
     }
 
     .sidebar {
-        width: 100%;
-        height: auto;
-        max-height: 50vh;
-        position: relative;
-        border-right: none;
-        border-bottom: 1px solid hsl(var(--border));
+        max-height: none;
+        overflow-y: auto;
+        z-index: 2;
+        display: flex;
+        flex-direction: column;
     }
 
+    .sidebar .quick-access {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .sidebar .button-grid {
+        flex: 1;
+        grid-template-rows: 1fr 1fr;
+        align-content: stretch;
+        max-height: 50vh;
+        margin: auto 0;
+    }
+
+    .sidebar .quick-btn {
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .chat-area {
+        z-index: 1;
+    }
+
+    /* Default: show chat, hide sidebar */
+    .sidebar {
+        opacity: 0;
+        visibility: hidden;
+        pointer-events: none;
+    }
+
+    .chat-area {
+        opacity: 1;
+        visibility: visible;
+    }
+
+    /* When sidebar tab is active */
+    .app-container[data-active-panel="sidebar"] .sidebar {
+        opacity: 1;
+        visibility: visible;
+        pointer-events: auto;
+        z-index: 3;
+    }
+
+    .app-container[data-active-panel="sidebar"] .chat-area {
+        opacity: 0;
+        visibility: hidden;
+        pointer-events: none;
+    }
+
+    /* When chat tab is active */
+    .app-container[data-active-panel="chat"] .sidebar {
+        opacity: 0;
+        visibility: hidden;
+        pointer-events: none;
+    }
+
+    .app-container[data-active-panel="chat"] .chat-area {
+        opacity: 1;
+        visibility: visible;
+        z-index: 3;
+    }
+
+    /* Mobile Tab Bar */
+    .mobile-tab-bar {
+        display: flex;
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        height: 60px;
+        background: hsl(var(--card));
+        border-top: 1px solid hsl(var(--border));
+        z-index: 100;
+        padding: 0;
+    }
+
+    .mobile-tab {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 4px;
+        background: none;
+        border: none;
+        color: hsl(var(--muted-foreground));
+        font-size: 0.7rem;
+        font-family: inherit;
+        font-weight: 500;
+        cursor: pointer;
+        transition: var(--transition-all);
+        padding: 6px 0;
+    }
+
+    .mobile-tab svg {
+        width: 20px;
+        height: 20px;
+        transition: var(--transition-all);
+    }
+
+    .mobile-tab.active {
+        color: hsl(var(--primary));
+    }
+
+    .mobile-tab.active svg {
+        filter: drop-shadow(0 0 4px hsl(var(--primary) / 0.5));
+    }
+
+    .mobile-tab:active {
+        transform: scale(0.95);
+    }
+
+    /* Adjust grid and layout for mobile */
     .button-grid {
         grid-template-columns: repeat(4, 1fr);
     }
@@ -1142,8 +1278,8 @@ body {
     }
 
     .chat-area {
-        height: auto;
-        min-height: 50vh;
+        height: calc(100vh - 60px);
+        min-height: unset;
     }
 
     .chat-messages {

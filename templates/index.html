@@ -16,7 +16,7 @@
 </head>
 
 <body>
-    <div class="app-container">
+    <div class="app-container" data-active-panel="chat">
         <!-- Sidebar -->
         <aside class="sidebar">
             <header class="sidebar-header">
@@ -249,6 +249,27 @@
                 </div>
             </form>
         </main>
+
+        <!-- Mobile Tab Bar (visible only on mobile/tablet) -->
+        <nav class="mobile-tab-bar" id="mobile-tab-bar">
+            <button class="mobile-tab" data-panel="sidebar" aria-label="Akses Pantas">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <rect x="3" y="3" width="7" height="7"></rect>
+                    <rect x="14" y="3" width="7" height="7"></rect>
+                    <rect x="14" y="14" width="7" height="7"></rect>
+                    <rect x="3" y="14" width="7" height="7"></rect>
+                </svg>
+                <span>Akses Pantas</span>
+            </button>
+            <button class="mobile-tab active" data-panel="chat" aria-label="Chat">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+                </svg>
+                <span>Chat</span>
+            </button>
+        </nav>
     </div>
 
     <script src="{{ url_for('static', filename='js/main.js') }}"></script>

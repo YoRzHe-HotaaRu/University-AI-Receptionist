@@ -242,6 +242,94 @@
       "content": "Untuk program diploma UITM, yuran adalah lebih kurang **RM 2,000 - RM 5,000 setahun**, bergantung pada program.\n\nContoh:\n- Diploma Perniagaan: ~RM 2,500/tahun\n- Diploma Perakaunan: ~RM 2,500/tahun\n- Diploma Sains: ~RM 3,000/tahun\n\nTapi yuran ni boleh berubah setiap tahun. Untuk maklumat tepat, better check website rasmi UITM atau campus terdekat.\n\nAda soalan lain? 😊",
       "reasoning": "The user is asking about tuition fees for diploma programs at UITM. I should provide information about diploma tuition fees in Malaysia. Let me give a general estimate since exact fees can vary by program and year.\n\nFor UITM diploma programs, the tuition fees are generally around RM 2,000 - RM 5,000 per year or around RM 200-500 per semester, depending on the program. This is approximate and can vary.\n\nI should respond in Malay since the user asked in Malay (Bahasa Malaysia).\n",
       "timestamp": "2026-03-01T01:13:36.657530"
+    },
+    {
+      "role": "user",
+      "content": "hello",
+      "timestamp": "2026-03-01T01:47:51.281835"
+    },
+    {
+      "role": "assistant",
+      "content": "Hai! 😊\n\nAda yang boleh saya tolong?",
+      "reasoning": "The user is saying hello again. I should respond in a friendly way in Bahasa Malaysia, as per my instructions.",
+      "timestamp": "2026-03-01T01:47:51.281835"
+    },
+    {
+      "role": "user",
+      "content": "hmmm, ape yang awak boleh buat?",
+      "timestamp": "2026-03-01T01:48:05.237211"
+    },
+    {
+      "role": "assistant",
+      "content": "Saya ni receptionist AI untuk UITM! 😊\n\n**Boleh bantu dengan:**\n\n- 📚 Info program (diploma, degree, master, PhD)\n- 📝 Requirements admission\n- 💰 Yuran & biasiswa\n- 🏫 Info campus & facilities\n- ⏰ Waktu operasi\n- ❓ Soalan lain tentang UITM\n\nAda apa nak tanya? 🙂",
+      "reasoning": "The user is asking again what I can do, in Malay this time (\"ape yang awak boleh buat?\"). I should respond in Malay and be brief about what I can help with as a UiTM receptionist AI.",
+      "timestamp": "2026-03-01T01:48:05.237211"
+    },
+    {
+      "role": "user",
+      "content": "best ke?",
+      "timestamp": "2026-03-01T01:48:48.371869"
+    },
+    {
+      "role": "assistant",
+      "content": "Ya, UITM ni antara universiti terbaik di Malaysia! 🎉\n\n- 🏆 Bukaniestat university terbesar\n- 📚 Options program yang banyak\n- 💼 Graduats demand tinggi\n- 🏫 Campus modernize\n\nSo, yes, best lah! 😄\n\nNak tau lebih detail tentang apa-apa? Just ask!",
+      "reasoning": "The user is asking \"best ke?\" which in Malay means \"is it good?\" or \"is it the best?\". This is a bit vague - they might be asking if UITM is a good university, or if the information I provided is good, or maybe they're asking about a specific program.\n\nI'll assume they're asking if UITM is a good university, and give a brief, positive response about UITM.",
+      "timestamp": "2026-03-01T01:48:48.371869"
+    },
+    {
+      "role": "user",
+      "content": "Apakah yuran tuisyen dan pilihan bantuan kewangan yang tersedia?",
+      "timestamp": "2026-03-01T01:50:42.878545"
+    },
+    {
+      "role": "assistant",
+      "content": "## 💰 Yuran Pengajian\n\n| Program | Anggaran Yuran |\n|---------|----------------|\n| Diploma | RM 1,000 - RM 3,000/setahun |\n| Ijazah Sarjana Muda | RM 1,500 - RM 5,000/setahun |\n| Sarjana/PhD | RM 3,000 - RM 10,000/setahun |\n\n## 💵 Bantuan Kewangan Tersedia\n\n- **PTPTN** - Pinjaman pendidikan kerajaan (https://www.ptptn.gov.my)\n- **Biasiswa JPA** - Untuk bidang kritikal, cover yuran + elaun\n- **Biasiswa MARA** - Untuk Bumiputera, yuran + elaun bulanan\n- **Biasiswa UITM** - Anugerah Naib Canselor & merit\n\n---\n\nNak details tentang mana-mana option ni? 🙂",
+      "reasoning": "The user is asking about tuition fees and financial aid options available. I should provide information about tuition fees and financial assistance in Bahasa Malaysia (Malay).\n\nBased on the system prompt information I have:\n\n**Yuran Pengajian:**\n- Diploma: RM 1,000 - RM 3,000 setahun\n- Ijazah Sarjana Muda: RM 1,500 - RM 5,000 setahun\n- Sarjana & PhD: RM 3,000 - RM 10,000 setahun\n\n**Biasiswa & Bantuan Kewangan:**\n- PTPTN - pinjaman pendidikan kerajaan\n- Biasiswa JPA - untuk pelajar cemerlang dalam bidang kritikal\n- Biasiswa MARA - untuk pelajar Bumiputera\n- Biasiswa UITM - Anugerah Naib Canselor dan biasiswa merit\n\nLet me respond in Malay, keeping it concise.",
+      "timestamp": "2026-03-01T01:50:42.878545"
+    },
+    {
+      "role": "user",
+      "content": "Apakah kalendar akademik dan jadual kelas?",
+      "timestamp": "2026-03-01T02:04:06.494413"
+    },
+    {
+      "role": "assistant",
+      "content": "## 📅 Kalendar Akademik UITM\n\n| Semester | Mula | Tamat |\n|----------|------|-------|\n| Semester 1 | September | Januari |\n| Semester 2 | Februari | Jun |\n| Semester 3 (kadangkala) | Julai | Ogos |\n\n---\n\n## 🕐 Jadual Kelas\n\n- Waktu belajar: **8 pagi - 5 petang** (bergantung program)\n- Setiap program ada jadual sendiri\n- Kelas biasanya dalam kumpulan (batch)\n\n---\n\n📌 **Tips:** Untuk jadual exact, better check dengan faculty atau campus tempat awak apply. Semua depends kat program yang pilih.\n\nAda lagi soalan? 😊",
+      "reasoning": "The user is asking about the academic calendar and class schedule at UITM. Let me provide the information I know from the context provided.\n\nFrom the context:\n- Semester baru usually starts in September (Semester 1) and February (Semester 2)\n\nI should also mention that class schedules vary by program and campus. The exact timetable would be provided by the respective faculty/campus.",
+      "timestamp": "2026-03-01T02:04:06.494413"
+    },
+    {
+      "role": "user",
+      "content": "Di manakah universiti terletak dan bagaimana saya boleh sampai ke sana?",
+      "timestamp": "2026-03-01T02:04:17.944929"
+    },
+    {
+      "role": "assistant",
+      "content": "## 📍 Lokasi UITM\n\n**Kampus Utama: Shah Alam, Selangor**\n\n- Alamat: UiTM Shah Alam, 40450 Shah Alam, Selangor\n- Dekat dengan Kuala Lumpur (lebih kurang 30 min drive)\n\n---\n\n## 🚗 Cara Nak Till Campus\n\n| Cara | Details |\n|------|---------|\n| **Kereta** | Highway Plus/Ellis + NKVE exits |\n| **KTM** | Station Shah Alam/Kwadong |\n| **Bas** | RapidKL route via KTM |\n| **Grab** | Available dari KL/Subang area |\n\n---\n\n## 🏫 Campus Lain\n\nUITM ada 30+ campuses di seluruh Malaysia. Campus mana yangawak plan nak apply?\n\nNak tahu details tentang specific campus atau program? 🙂",
+      "reasoning": "User bertanya tentang lokasi UITM dan bagaimana nak sampai. Saya perlu bagi info tentang kampus utama (Shah Alam) dan juga info umum tentang campuses lain. Juga bagi options transport.",
+      "timestamp": "2026-03-01T02:04:17.944929"
+    },
+    {
+      "role": "user",
+      "content": "oo gitu",
+      "timestamp": "2026-03-01T02:13:44.475404"
+    },
+    {
+      "role": "assistant",
+      "content": "Ya, gitu la! 😄\n\nAnything else nak tanya? Saya sedia bantu! 🙂",
+      "reasoning": "The user just said \"oo gitu\" which is like \"oh I see\" or \"oh like that\" in Malay - basically acknowledging the information. It's a casual response. I should respond briefly and offer to help with anything else.",
+      "timestamp": "2026-03-01T02:13:44.475404"
+    },
+    {
+      "role": "user",
+      "content": "hello",
+      "timestamp": "2026-03-01T02:15:29.497803"
+    },
+    {
+      "role": "assistant",
+      "content": "Halo! Welcome to UiTM! 😊\n\nAda yang boleh saya bantu? Saya sedia jawab semua soalan tentang:\n\n- 📝 Permohonan\n- 📚 Program yang ditawarkan\n- 💰 Yuran & biasiswa\n- 🏫 Lokasi campus\n- 📅 Kalendar akademik\n\nJust ask! 🙋‍♀️",
+      "reasoning": "The user said \"hello\" - a simple greeting. I should respond in a friendly, welcoming manner in Bahasa Malaysia as required.",
+      "timestamp": "2026-03-01T02:15:29.497803"
     }
   ]
 }

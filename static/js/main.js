@@ -37,7 +37,9 @@
         ttsToggleBtn: document.getElementById('tts-toggle-btn'),
         ttsIconOff: document.getElementById('tts-icon-off'),
         ttsIconOn: document.getElementById('tts-icon-on'),
-        ttsToggleLabel: document.getElementById('tts-toggle-label')
+        ttsToggleLabel: document.getElementById('tts-toggle-label'),
+        appContainer: document.querySelector('.app-container'),
+        mobileTabs: document.querySelectorAll('.mobile-tab')
     };
 
     // =========================================================================
@@ -883,6 +885,14 @@
             button.style.transform = '';
         }, 150);
 
+        // Auto-switch to chat panel on mobile
+        if (elements.appContainer.dataset.activePanel === 'sidebar') {
+            elements.appContainer.dataset.activePanel = 'chat';
+            elements.mobileTabs.forEach(t => {
+                t.classList.toggle('active', t.dataset.panel === 'chat');
+            });
+        }
+
         // Update input value
         elements.messageInput.value = prompt;
 
@@ -978,6 +988,20 @@
 
         // Set up TTS toggle
         elements.ttsToggleBtn.addEventListener('click', toggleTTS);
+
+        // Set up mobile tab switching
+        elements.mobileTabs.forEach(tab => {
+            tab.addEventListener('click', () => {
+                const panel = tab.dataset.panel;
+                elements.appContainer.dataset.activePanel = panel;
+                elements.mobileTabs.forEach(t => t.classList.remove('active'));
+                tab.classList.add('active');
+                // Focus input when switching to chat
+                if (panel === 'chat') {
+                    elements.messageInput.focus();
+                }
+            });
+        });
 
         // Set up enter key handling
         elements.messageInput.addEventListener('keydown', (event) => {
