@@ -1,8 +1,8 @@
-# 🎓 UiTM AI Receptionist
+# 🎓 UITM AI Receptionist
 
-An AI-powered virtual receptionist for UiTM (Universiti Teknologi MARA), built with Flask and integrated with OpenRouter's LLM API. Features a modern split-panel interface with quick access buttons, intelligent conversation memory, and Text-to-Speech (TTS) capability.
+An AI-powered virtual receptionist for UITM (Universiti Teknologi MARA), built with Flask and integrated with OpenRouter's LLM API. Features a modern split-panel interface with quick access buttons, intelligent conversation memory, streaming AI responses with reasoning display, and Text-to-Speech (TTS) with voice cloning support.
 
-![UiTM AI Receptionist](https://img.shields.io/badge/Flask-2.3+-black?style=flat&logo=flask)
+![UITM AI Receptionist](https://img.shields.io/badge/Flask-2.3+-black?style=flat&logo=flask)
 ![Python](https://img.shields.io/badge/Python-3.8+-blue?style=flat&logo=python)
 ![License](https://img.shields.io/badge/License-MIT-green)
 
@@ -10,10 +10,14 @@ An AI-powered virtual receptionist for UiTM (Universiti Teknologi MARA), built w
 
 - **Smart Chat Interface**: Split-panel layout with quick access buttons on the left, chat on the right
 - **Quick Access Buttons**: Pre-configured buttons for common queries (Admissions, Tuition, Programs, etc.)
+- **Streaming Responses**: Real-time AI response streaming with live reasoning/thinking display
+- **AI Reasoning Display**: Expandable "Lihat fikiran AI" panel shows the model's thinking process
 - **Date-Based Memory**: Conversations are stored in organized date folders for easy retrieval
-- **LLM Integration**: Powered by OpenRouter API with Qwen model
-- **Text-to-Speech (TTS)**: Built-in voice output using MiniMax TTS API
+- **LLM Integration**: Powered by OpenRouter API with MiniMax M2.5 model
+- **Text-to-Speech (TTS)**: Auto-play voice output using MiniMax TTS API with voice cloning support
+- **TTS Toggle**: Global toggle button in chat header — "Suara: Hidup / Mati" (Voice: On / Off)
 - **Bahasa Malaysia**: AI responds in Malay language for local users
+- **Markdown Rendering**: Rich formatting support including tables, lists, bold, italic, links
 - **Responsive Design**: Works on desktop and mobile devices
 - **Premium UI**: Modern shadcn/ui-inspired design with teal accents
 - **Industry Standards**: Secure coding practices, input validation, error handling, rate limiting
@@ -25,6 +29,7 @@ AI_Receptionist/
 ├── app.py                    # Flask server with API endpoints
 ├── requirements.txt          # Python dependencies
 ├── .env.example             # Environment variables template
+├── .env                     # Your local config (gitignored)
 ├── README.md                 # This file
 ├── memory/                   # Conversation memory (auto-created)
 │   └── YYYY-MM-DD/
@@ -93,7 +98,7 @@ AI_Receptionist/
 | Variable | Required | Default | Description |
 |----------|----------|---------|-------------|
 | `OPENROUTER_API_KEY` | Yes | - | Your OpenRouter API key |
-| `MODEL_NAME` | No | `minimax/minimax-m2.5` | LLM model to use |
+| `MODEL_NAME` | No | `minimax/minimax-m2.5` | LLM model to use via OpenRouter |
 | `FLASK_DEBUG` | No | `False` | Enable debug mode |
 | `PORT` | No | `5000` | Server port |
 | `SECRET_KEY` | No | Random | Flask secret key |
@@ -102,8 +107,8 @@ AI_Receptionist/
 | `RATE_LIMIT` | No | `30` | Requests per minute per IP |
 | `MINIMAX_API_KEY` | No | - | MiniMax API key for TTS |
 | `MINIMAX_TTS_MODEL` | No | `speech-2.8-turbo` | TTS model |
-| `MINIMAX_TTS_VOICE_ID` | No | (varies) | Voice ID for TTS |
-| `MINIMAX_TTS_LANGUAGE` | No | `ms` | TTS language (ms=Malay) |
+| `MINIMAX_TTS_VOICE_ID` | No | (cloned voice) | Voice ID for TTS (see Voice Cloning) |
+| `MINIMAX_TTS_LANGUAGE` | No | `ms` | TTS language (ms = Malay) |
 
 ### Getting an OpenRouter API Key
 
@@ -113,13 +118,36 @@ AI_Receptionist/
 4. Create a new key
 5. Add credits to your account (required for API calls)
 
-### Getting a MiniMax API Key (Optional - for TTS)
+### Getting a MiniMax API Key (Optional — for TTS)
 
 1. Go to [MiniMax Platform](https://platform.minimax.io)
 2. Sign up or log in
 3. Navigate to API Keys
 4. Create a new key
 5. Add credits to your account (required for TTS calls)
+
+## 🎙️ Voice Cloning (TTS)
+
+The app supports cloned voices via MiniMax. To use your own custom voice:
+
+1. Go to the [MiniMax Platform](https://platform.minimax.io) **Voice Clone** section
+2. Upload a **10–30 second** audio sample (MP3/WAV, clean speech, no background noise)
+3. Copy the generated voice ID (format: `moss_audio_xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx`)
+4. Set it in your `.env`:
+   ```env
+   MINIMAX_TTS_VOICE_ID=moss_audio_your-voice-id-here
+   ```
+
+### TTS Voice Settings
+
+The following settings are configured in `app.py` under the `synthesize_speech()` method:
+
+| Setting | Current Value | Description |
+|---------|---------------|-------------|
+| `speed` | `1.3` | Playback speed (0.5 – 2.0) |
+| `vol` | `1.0` | Volume (0.1 – 10.0) |
+| `pitch` | `0` | Pitch adjustment (-12 to 12) |
+| `language_boost` | `Malay` | Language optimization |
 
 ## 💬 Usage
 
@@ -141,9 +169,18 @@ Type your own question in the chat input and press Enter or click Send.
 
 ### Text-to-Speech (TTS)
 
-- Click the speaker icon in the chat header to enable/disable auto-voice
-- When enabled, AI responses will be spoken aloud automatically
-- Labels show "Suara: Hidup" (Voice: On) or "Suara: Mati" (Voice: Off)
+- Click the speaker toggle button in the chat header to enable/disable auto-voice
+- When enabled, AI responses will be spoken aloud automatically after streaming completes
+- Labels show **"Suara: Hidup"** (Voice: On) or **"Suara: Mati"** (Voice: Off)
+- The toggle pulses while audio is loading/playing
+- Click again to stop playback immediately
+
+### AI Reasoning Display
+
+- The app uses a reasoning-capable model (MiniMax M2.5) that shows its thinking process
+- During streaming, reasoning appears in a compact scrollable box (120px max height)
+- After the response completes, reasoning collapses to a **"Lihat fikiran AI"** toggle
+- Click the toggle to expand/collapse the reasoning
 
 ### Memory System
 
@@ -168,7 +205,7 @@ You can ask questions like:
 - CORS configured for trusted origins
 - Rate limiting on API endpoints (30 requests/minute per IP)
 - Error messages don't leak internal details
-- Security headers (X-Content-Type-Options, X-Frame-Options, CSP)
+- Security headers (X-Content-Type-Options, X-Frame-Options, CSP with `media-src blob:`)
 
 ## 🐛 Troubleshooting
 
@@ -196,16 +233,23 @@ TTS not configured. Please set MINIMAX_API_KEY.
 ```
 **Solution**: Add your MiniMax API key to the `.env` file for Text-to-Speech functionality.
 
+### Model Throttled (503)
+```
+Too many requests. Your requests are being throttled due to system capacity limits.
+```
+**Solution**: This is a provider-side capacity issue, not your rate limit. Wait 30–60 seconds and try again, or switch to a different model in `.env`.
+
 ## 📝 API Endpoints
 
 | Endpoint | Method | Description |
 |----------|--------|-------------|
 | `/` | GET | Main page |
-| `/api/chat` | POST | Send a chat message |
+| `/api/chat` | POST | Send a chat message (non-streaming) |
+| `/api/chat/stream` | POST | Send a chat message (streaming with reasoning) |
 | `/api/memory` | GET | Get conversation history |
 | `/api/reset` | POST | Reset conversation |
 | `/api/health` | GET | Health check |
-| `/api/tts` | POST | Generate TTS audio |
+| `/api/tts` | POST | Generate TTS audio (returns MP3) |
 
 ## 🛠️ Development
 
@@ -225,4 +269,3 @@ gunicorn -w 4 -b 0.0.0.0:5000 app:app
 MIT License - feel free to use this for your university or organization.
 
 ---
-
