@@ -198,6 +198,94 @@
       "content": "Saya ni Macalah Receptionist AI untuk UiTM! 😄\n\nBoleh tolong bagi info:\n\n📋 **Pendaftaran & Admissions**\n- Syarat masuk\n- Tarikh penting\n- Cara memohon\n\n💰 **Yuran & Pembayaran**\n- Yuran pengajian\n- Cara bayar\n- Biasiswa & bantuan kewangan (PTPTN, MARA, JPA)\n\n🎓 **Program & Courses**\n- Diploma\n- Sarjana Muda\n- Postgraduate\n\n🏫 **Campus & Facilities**\n- Lokasi campus\n- Asrama\n- Aktiviti kokurikulum\n\n📞 **Hubungi**\n- Nombor telefon\n- Alamat pejabat\n\nApa yang nak tahu? Saya tolong! 😊",
       "reasoning": "The user is asking what I can do. I should explain my role as a UiTM receptionist and what kind of information I can provide, in Malay.",
       "timestamp": "2026-03-02T01:54:34.426259"
+    },
+    {
+      "role": "user",
+      "content": "Apakah soalan-soalan yang sering ditanya tentang universiti ini?",
+      "timestamp": "2026-03-02T02:26:29.531602"
+    },
+    {
+      "role": "assistant",
+      "content": "Soalan lazim tentang UiTM:\n\n**Pendaftaran & Admissions**\n- Bagaimana cara memohon ke UiTM?\n- Apakah syarat masuk untuk SPM/Diploma/Sarjana Muda?\n- Bilakah tarikh tutup permohonan?\n\n**Yuran & Kewangan**\n- Berapa yuran pengajian?\n- Bagaimana cara memohon PTPTN?\n- Ada lagi biasiswa lain tak?\n\n**Program & Courses**\n- Apa kursus yang UiTM tawarkan?\n- Mana kursus yang paling popular?\n- Berapa lama tempoh pengajian?\n\n**Campus & Facilities**\n- UiTM ada kat mana je?\n- Ada asrama tak?\n- Facilities apa yang ada?\n\n**Kerjaya & Alumni**\n- Peluang kerja lepas graduat?\n- UiTM dapat recognized tak?\n\n---\n\nAda soalan specific yang nak tanya? Saya tolong! 😊",
+      "reasoning": "The user is asking about frequently asked questions (FAQ) about UiTM. I should list common questions that people usually ask about UiTM in a concise and helpful way.",
+      "timestamp": "2026-03-02T02:26:29.531602"
+    },
+    {
+      "role": "user",
+      "content": "hai",
+      "timestamp": "2026-03-02T02:31:37.811959"
+    },
+    {
+      "role": "assistant",
+      "content": "Hai! 😊\n\nAda yang saya boleh bantu tentang UiTM? Just tau je!",
+      "reasoning": "The user said \"hai\" which is a casual greeting in Malay. I should respond in a friendly, brief way and ask if they need help with anything about UiTM.",
+      "timestamp": "2026-03-02T02:31:37.811959"
+    },
+    {
+      "role": "user",
+      "content": "ape yang awak boleh buat?",
+      "timestamp": "2026-03-02T02:32:00.868555"
+    },
+    {
+      "role": "assistant",
+      "content": "Saya boleh tolong:\n\n📝 **Info Pendaftaran**\n- Cara memohon\n- Syarat masuk\n\n💰 **Yuran & Biasiswa**\n- Yuran pengajian\n- PTPTN, MARA, JPA\n\n🎓 **Program Kursus**\n- Diploma, Sarjana Muda\n\n🏫 **Campus & Asrama**\n- Lokasi, facilities\n\n📞 **Hubungi UiTM**\n- Nombor telefon, alamat\n\n---\n\nApa yang nak tahu? 😊",
+      "reasoning": "The user is asking again what I can do. I already answered this before, but they're asking again. I'll give a brief and clear answer about what I can help with as a UiTM AI receptionist.",
+      "timestamp": "2026-03-02T02:32:00.868555"
+    },
+    {
+      "role": "user",
+      "content": "hello",
+      "timestamp": "2026-03-02T02:33:02.523085"
+    },
+    {
+      "role": "assistant",
+      "content": "Hello! 😊\n\nAda yang saya boleh tolong?",
+      "reasoning": "The user is saying hello again. I should respond in a friendly, brief manner in Bahasa Malaysia.",
+      "timestamp": "2026-03-02T02:33:02.523085"
+    },
+    {
+      "role": "user",
+      "content": "awak boleh buat apa je?",
+      "timestamp": "2026-03-02T02:33:25.595651"
+    },
+    {
+      "role": "assistant",
+      "content": "Saya boleh tolong bagi info tentang UiTM:\n\n✅ Syarat pendaftaran & permohonan\n✅ Yuran & biasiswa (PTPTN, MARA, JPA)\n✅ Program kursus yang ditawarkan\n✅ Lokasi campus & asrama\n✅ Aktivitas kokurikulum\n✅ Maklumat hubungan UiTM\n\nApa yang nak tahu? 😊",
+      "reasoning": "The user is asking again what I can do. I've already answered this question multiple times, but they're asking again. Let me give a brief and friendly response in Malay.",
+      "timestamp": "2026-03-02T02:33:25.595651"
+    },
+    {
+      "role": "user",
+      "content": "hello",
+      "timestamp": "2026-03-02T02:38:36.392497"
+    },
+    {
+      "role": "assistant",
+      "content": "Hello! 😊\n\nAda yang saya boleh bantu tentang UiTM?",
+      "reasoning": "The user is saying \"hello\" again. I should respond politely and simply, asking how I can help them. Since they seem to be testing or just greeting, I'll keep it brief and friendly in formal Malay.",
+      "timestamp": "2026-03-02T02:38:36.392497"
+    },
+    {
+      "role": "user",
+      "content": "ape yang boleh awak buat?",
+      "timestamp": "2026-03-02T02:39:45.194420"
+    },
+    {
+      "role": "assistant",
+      "content": "Saya boleh membantu Tuan/Puan dengan:\n\n- 📋 Maklumat permohonan & syarat kemasukan\n- 💰 Yuran pengajian & pilihan biasiswa\n- 🎓 Senarai program yang ditawarkan\n- 🏫 Lokasi campus & info asrama\n- ❓ Jawapan kepada soalan lazim tentang UiTM\n\nApa yang Tuan/Puan ingin tahu? 😊",
+      "reasoning": "The user is asking again what I can do. I've already answered this question twice. Let me provide a clear, concise response in formal Malaysian Malay.\n\nI should keep it brief and friendly while maintaining formal language as instructed.",
+      "timestamp": "2026-03-02T02:39:45.194420"
+    },
+    {
+      "role": "user",
+      "content": "mengenai yurang pengajian",
+      "timestamp": "2026-03-02T02:40:07.795344"
+    },
+    {
+      "role": "assistant",
+      "content": "Berikut adalah maklumat yuran pengajian di UiTM:\n\n**Diploma**\n- Yuran tahunan: RM 1,000 - RM 3,000\n- Yuran pendaftaran: RM 200 - RM 500\n\n**Ijazah Sarjana Muda**\n- Yuran tahunan: RM 1,500 - RM 5,000\n- Nota: Program profesional seperti Perubatan dan Kejuruteraan mungkin lebih tinggi\n\n**Sarjana & PhD**\n- Yuran tahunan: RM 3,000 - RM 10,000\n- Bergantung pada program dan mod pengajian (sepenuh masa/separuh masa)\n\n---\n\n**Pilihan Bantuan Kewangan:**\n- PTPTN (pinjaman)\n- Biasiswa MARA\n- Biasiswa JPA\n- Biasiswa UITM\n\nUntuk maklumat lebih tepat, Tuan/Puan boleh lawati www.uitm.edu.my atau hubungi campus berkaitan.\n\nAda soalan lain? 😊",
+      "reasoning": "The user is asking about tuition fees (yuran pengajian). I should provide information about UiTM tuition fees in formal Malay language.\n\nBased on the system prompt information:\n- Diploma: RM 1,000 - RM 3,000 setahun\n- Ijazah Sarjana Muda: RM 1,500 - RM 5,000 setahun\n- Program profesional (Perubatan, Kejuruteraan): yuran mungkin lebih tinggi\n- Sarjana & PhD: RM 3,000 - RM 10,000 setahun\n\nI should also mention:\n- Yuran pendaftaran: RM 200 - RM 500\n\nLet me provide this in formal Malay.",
+      "timestamp": "2026-03-02T02:40:07.795344"
     }
   ]
 }
