@@ -9,12 +9,21 @@ import re
 import json
 import logging
 import html
+import mimetypes
 from datetime import datetime, timedelta
 from pathlib import Path
 from typing import Dict, List, Optional, Any
 from functools import wraps
 import time
 import threading
+
+# Fix MIME types for static files (especially on Windows)
+# Ensures CSS and JS files are served with correct Content-Type headers
+mimetypes.add_type('text/css', '.css')
+mimetypes.add_type('application/javascript', '.js')
+mimetypes.add_type('application/javascript', '.mjs')
+mimetypes.add_type('application/json', '.json')
+mimetypes.add_type('image/svg+xml', '.svg')
 
 from rag import KnowledgeBase
 from vts_service import init_vts, vts_lip_sync, shutdown_vts
@@ -40,8 +49,8 @@ logger = logging.getLogger(__name__)
 app = Flask(__name__)
 app.secret_key = os.environ.get('SECRET_KEY', os.urandom(24).hex())
 
-# Security: Configure CORS - default to localhost for development
-CORS_ORIGINS = os.environ.get('CORS_ORIGINS', 'http://localhost:5000,http://127.0.0.1:5000')
+# Security: Configure CORS - default to all origins for development
+CORS_ORIGINS = os.environ.get('CORS_ORIGINS', '*')
 CORS(app, resources={
     r"/api/*": {
         "origins": CORS_ORIGINS,
@@ -56,11 +65,9 @@ CORS(app, resources={
 @app.after_request
 def add_security_headers(response):
     """Add security headers to all responses."""
-    response.headers['X-Content-Type-Options'] = 'nosniff'
     response.headers['X-Frame-Options'] = 'DENY'
     response.headers['X-XSS-Protection'] = '1; mode=block'
-    response.headers['Strict-Transport-Security'] = 'max-age=31536000; includeSubDomains'
-    response.headers['Content-Security-Policy'] = "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; media-src 'self' blob:"
+    response.headers['X-Content-Type-Options'] = 'nosniff'
     return response
 
 # Rate Limiting Storage (simple in-memory for development)

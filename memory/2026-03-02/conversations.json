@@ -99,6 +99,17 @@
       "content": "Hai hai! Saya robotic UiTM. Nak tahu apa tentang universiti? 🎓",
       "reasoning": "The user keeps saying \"hello\" repeatedly. I should just respond in a friendly way and wait for them to ask a real question. Keep it brief and welcoming.",
       "timestamp": "2026-03-02T01:12:35.084446"
+    },
+    {
+      "role": "user",
+      "content": "ape je yang awak boleh buat?",
+      "timestamp": "2026-03-02T01:30:26.974593"
+    },
+    {
+      "role": "assistant",
+      "content": "Saya boleh bagi info tentang:\n\n- ☀️ Programs yang ditawarkan (Diploma, Degree, Master, PhD)\n- 📋 Syarat kemasukan\n- 💰 Yuran dan bayaran\n- 📍 Lokasi campus\n- ⏰ Waktu operasi\n- 📞 Cara hubungi UiTM\n\nAda apa yang nak tanya? 😊",
+      "reasoning": "The user is asking what I can do. I should explain my role as a UiTM receptionist in Bahasa Malaysia, keeping it brief and direct.",
+      "timestamp": "2026-03-02T01:30:26.974593"
     }
   ]
 }
