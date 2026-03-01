@@ -17,6 +17,7 @@ import time
 import threading
 
 from rag import KnowledgeBase
+from vts_service import init_vts, vts_lip_sync, shutdown_vts
 
 # Load environment variables from .env file
 from dotenv import load_dotenv
@@ -116,6 +117,11 @@ class Config:
     MINIMAX_TTS_MODEL = os.environ.get('MINIMAX_TTS_MODEL', 'speech-2.8-turbo')
     MINIMAX_TTS_VOICE_ID = os.environ.get('MINIMAX_TTS_VOICE_ID', 'moss_audio_f942350f-133e-11f1-8c62-b61f19f976ea')
     MINIMAX_TTS_LANGUAGE = os.environ.get('MINIMAX_TTS_LANGUAGE', 'ms')  # Malay language code
+    
+    # VTubeStudio Configuration
+    VTS_ENABLED = os.environ.get('VTS_ENABLED', 'false').lower() == 'true'
+    VTS_HOST = os.environ.get('VTS_HOST', 'localhost')
+    VTS_PORT = int(os.environ.get('VTS_PORT', '8001'))
     
     # System prompt for the AI receptionist
     SYSTEM_PROMPT = """You are a friendly and helpful AI receptionist for UiTM (Universiti Teknologi MARA), a Malaysian university. 
@@ -711,6 +717,15 @@ class MiniMaxTTSService:
 # Initialize TTS service
 minimax_tts_service = MiniMaxTTSService()
 
+# Initialize VTubeStudio lip sync (background thread)
+import atexit
+init_vts(
+    enabled=Config.VTS_ENABLED,
+    host=Config.VTS_HOST,
+    port=Config.VTS_PORT
+)
+atexit.register(shutdown_vts)
+
 
 # ============================================================================
 # Flask Routes
@@ -1050,6 +1065,9 @@ def tts():
         if not audio_data:
             return jsonify({'error': 'Failed to generate audio'}), 500
         
+        # Fire-and-forget lip sync to VTubeStudio (runs in background thread)
+        vts_lip_sync(audio_data)
+        
         # Return audio file
         response = make_response(audio_data)
         response.headers['Content-Type'] = 'audio/mpeg'
@@ -1102,5 +1120,6 @@ if __name__ == '__main__':
     logger.info(f"Debug mode: {debug_mode}")
     logger.info(f"Model: {Config.MODEL_NAME}")
     logger.info(f"Memory directory: {Config.MEMORY_DIR}")
+    logger.info(f"VTubeStudio: {'enabled' if Config.VTS_ENABLED else 'disabled'}")
     
     app.run(host='0.0.0.0', port=port, debug=debug_mode)
