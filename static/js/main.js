@@ -516,6 +516,89 @@
         };
     }
 
+    // Lip sync state tracking
+    let lipSyncFrames = [];
+    let lipSyncInterval = null;
+    let lastMouthValue = 0;
+    let smoothedMouthValue = 0;
+
+    /**
+     * Send mouth value to VTS via API for synchronized lip movement.
+     * @param {number} value - Mouth open value (0.0-1.0)
+     */
+    async function sendMouthValue(value) {
+        // Only send if value changed significantly (reduced from 0.05 to 0.15 for smoother movement)
+        if (Math.abs(value - lastMouthValue) < 0.15) return;
+        lastMouthValue = value;
+
+        try {
+            await fetch('/api/vts/mouth', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ value: value })
+            });
+        } catch (error) {
+            // Silent fail - VTS sync is non-critical
+            console.debug('VTS mouth update failed:', error);
+        }
+    }
+
+    /**
+     * Start browser-driven lip sync synchronized with audio playback.
+     * Uses the lip sync frames from the TTS response header.
+     * Smooths the mouth movements for more natural lip sync.
+     * @param {HTMLAudioElement} audio - The audio element being played
+     * @param {Array} frames - Array of [timestamp, mouthValue] pairs
+     */
+    function startBrowserLipSync(audio, frames) {
+        if (!frames || frames.length === 0) return;
+
+        lipSyncFrames = frames;
+        let currentFrameIndex = 0;
+        smoothedMouthValue = 0;
+
+        // Clear any existing interval
+        if (lipSyncInterval) {
+            clearInterval(lipSyncInterval);
+        }
+
+        // Smoothing factor (0.0-1.0): higher = more smoothing, slower transitions
+        const smoothingFactor = 0.7;
+
+        // Update at 15fps for natural lip sync (was 30fps - too fast/jittery)
+        // Human speech doesn't change mouth position 30 times per second
+        lipSyncInterval = setInterval(() => {
+            if (!audio || audio.paused || audio.ended) {
+                clearInterval(lipSyncInterval);
+                lipSyncInterval = null;
+                sendMouthValue(0); // Close mouth when done
+                smoothedMouthValue = 0;
+                return;
+            }
+
+            const currentTime = audio.currentTime;
+
+            // Find the frame that matches current playback time
+            while (currentFrameIndex < lipSyncFrames.length && 
+                   lipSyncFrames[currentFrameIndex][0] < currentTime) {
+                currentFrameIndex++;
+            }
+
+            // Get target mouth value for current time
+            let targetMouthValue = 0;
+            if (currentFrameIndex < lipSyncFrames.length) {
+                targetMouthValue = lipSyncFrames[currentFrameIndex][1];
+            }
+
+            // Apply exponential smoothing for natural movement
+            // This prevents rapid open/close cycles and creates smoother transitions
+            smoothedMouthValue = (smoothedMouthValue * smoothingFactor) + 
+                                (targetMouthValue * (1 - smoothingFactor));
+
+            sendMouthValue(smoothedMouthValue);
+        }, 66); // ~15fps - more natural for lip sync
+    }
+
     /**
      * Auto-play TTS for a given text (used when toggle is enabled).
      * Optimized for low latency - starts fetching immediately and plays as soon as ready.
@@ -530,6 +613,13 @@
             currentAudio.currentTime = 0;
             currentAudio = null;
         }
+
+        // Stop any existing lip sync
+        if (lipSyncInterval) {
+            clearInterval(lipSyncInterval);
+            lipSyncInterval = null;
+        }
+        lipSyncFrames = [];
 
         // Show subtle loading indicator without blocking
         elements.ttsToggleBtn.classList.add('loading');
@@ -555,6 +645,19 @@
                 return;
             }
 
+            // Extract lip sync frames from response header
+            let lipSyncData = null;
+            const lipSyncHeader = response.headers.get('X-LipSync-Frames');
+            if (lipSyncHeader) {
+                try {
+                    const lipSyncJson = atob(lipSyncHeader);
+                    lipSyncData = JSON.parse(lipSyncJson);
+                    console.log('[LipSync] Received', lipSyncData.length, 'frames from server');
+                } catch (e) {
+                    console.warn('[LipSync] Failed to parse lip sync frames:', e);
+                }
+            }
+
             // Get audio blob and start playing immediately
             const audioBlob = await response.blob();
             const audioUrl = URL.createObjectURL(audioBlob);
@@ -569,6 +672,12 @@
                 currentAudio = null;
                 URL.revokeObjectURL(audioUrl);
                 elements.ttsToggleBtn.classList.remove('loading');
+                // Ensure lip sync stops
+                if (lipSyncInterval) {
+                    clearInterval(lipSyncInterval);
+                    lipSyncInterval = null;
+                }
+                sendMouthValue(0);
             };
 
             audio.onerror = () => {
@@ -576,6 +685,18 @@
                 URL.revokeObjectURL(audioUrl);
                 elements.ttsToggleBtn.classList.remove('loading');
                 console.error('TTS audio playback error');
+                if (lipSyncInterval) {
+                    clearInterval(lipSyncInterval);
+                    lipSyncInterval = null;
+                }
+                sendMouthValue(0);
+            };
+
+            // Start browser-driven lip sync when audio starts playing
+            audio.onplay = () => {
+                if (lipSyncData) {
+                    startBrowserLipSync(audio, lipSyncData);
+                }
             };
 
             // Start playing as soon as possible

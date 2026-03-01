@@ -110,6 +110,94 @@
       "content": "Saya boleh bagi info tentang:\n\n- ☀️ Programs yang ditawarkan (Diploma, Degree, Master, PhD)\n- 📋 Syarat kemasukan\n- 💰 Yuran dan bayaran\n- 📍 Lokasi campus\n- ⏰ Waktu operasi\n- 📞 Cara hubungi UiTM\n\nAda apa yang nak tanya? 😊",
       "reasoning": "The user is asking what I can do. I should explain my role as a UiTM receptionist in Bahasa Malaysia, keeping it brief and direct.",
       "timestamp": "2026-03-02T01:30:26.974593"
+    },
+    {
+      "role": "user",
+      "content": "ooo",
+      "timestamp": "2026-03-02T01:31:33.838856"
+    },
+    {
+      "role": "assistant",
+      "content": "Ok je! Kalau ada soalan, tanya je. Saya sedia在这里! 😄",
+      "reasoning": "The user just said \"ooo\" which is an acknowledgment. They might be thinking about what to ask, or they might be done. I'll keep it brief and wait for their question.",
+      "timestamp": "2026-03-02T01:31:33.838856"
+    },
+    {
+      "role": "user",
+      "content": "sape nama awak?",
+      "timestamp": "2026-03-02T01:32:04.206771"
+    },
+    {
+      "role": "assistant",
+      "content": "Nama saya \"Receptionist UiTM\" atau boleh panggil saya \"Cikgu Bot\" 😄\n\nSaya ni robotic AI yang kerja di kaunter pertanyaan UiTM. Apa yang nak saya tolong?",
+      "reasoning": "The user is asking for my name. I should give myself a friendly name that's appropriate for a university receptionist AI in Malaysia.",
+      "timestamp": "2026-03-02T01:32:04.206771"
+    },
+    {
+      "role": "user",
+      "content": "oooo",
+      "timestamp": "2026-03-02T01:33:59.186531"
+    },
+    {
+      "role": "assistant",
+      "content": "Haa, fahamlah tu! 😅\n\nNak tahu apa-apa tentang UiTM ke? Tanya saja!",
+      "reasoning": "The user is saying \"oooo\" which is like \"ohhh\" in English - showing acknowledgment or understanding. They're probably just acknowledging my explanation. I should respond briefly and keep the conversation open for them to ask questions.",
+      "timestamp": "2026-03-02T01:33:59.186531"
+    },
+    {
+      "role": "user",
+      "content": "apakah uitm ni ya?",
+      "timestamp": "2026-03-02T01:35:04.954971"
+    },
+    {
+      "role": "assistant",
+      "content": "UITM tu Universiti Teknologi MARA - universiti awam terbesar di Malaysia!\n\n🏛️ Ada banyak campus kat seluruh Malaysia (Shah Alam, Pulau Pinang, Perlis, Kedah, dll)\n\n📚 Fokus pada program:\n- Perdagangan & Perakaunan\n- Sains & Teknologi\n- Seni & Desain\n- Perubatan & Sains Kesihatan\n\n🎓 Antara universiti popular untuk student SPM lepasan tengah tahun/akhir tahun!\n\nAda soalan lain tak? 😊",
+      "reasoning": "The user is asking what UiTM is. I should give a brief explanation about UiTM in Bahasa Malaysia.",
+      "timestamp": "2026-03-02T01:35:04.954971"
+    },
+    {
+      "role": "user",
+      "content": "hai hai",
+      "timestamp": "2026-03-02T01:45:17.389139"
+    },
+    {
+      "role": "assistant",
+      "content": "Hai hai! 🙋‍♂️\n\nSelamat datang ke UiTM! Saya sedia nak bantu you dengan apa-apa pertanyaan tentang universiti ni.\n\nAda yang nak tahu? 😊",
+      "reasoning": "The user is saying \"hai hai\" which is a casual greeting, like \"hello hello\" in a friendly way. I should respond in a friendly, welcoming manner in Bahasa Malaysia as required.",
+      "timestamp": "2026-03-02T01:45:17.389139"
+    },
+    {
+      "role": "user",
+      "content": "best ke uitm ni?",
+      "timestamp": "2026-03-02T01:46:21.639977"
+    },
+    {
+      "role": "assistant",
+      "content": "Best jugak! 😅\n\n其中一些优点:\n\n✅ Universiti awam kedua terbesar di Malaysia\n✅ Reputasi baik dalam bidang perniagaan & perakaunan\n✅ Kos pengajian berpatutan (dengan PTPTN)\n✅ Banyak pilihan program & campus\n✅ Peluang kerja yang baik lepas graduat\n\nTapi depends jugak pada program yang nak ambik dan personal interest la!\n\nNak tau details tentang program ke? Saya boleh bagi info lanjut! 😊",
+      "reasoning": "The user is asking if UITM is good/best. I should give a balanced, brief answer about UITM's strengths in Bahasa Malaysia.",
+      "timestamp": "2026-03-02T01:46:21.639977"
+    },
+    {
+      "role": "user",
+      "content": "hello\\",
+      "timestamp": "2026-03-02T01:54:16.190851"
+    },
+    {
+      "role": "assistant",
+      "content": "Hello! 🙋‍♂️\n\nAda apa-apa yang saya boleh tolong tentang UiTM? 😊",
+      "reasoning": "The user said \"hello\" in English. Even though they wrote in English, I should respond in Bahasa Malaysia since the instruction says I MUST respond in Bahasa Malaysia for ALL responses. I'll keep it brief and friendly as instructed.",
+      "timestamp": "2026-03-02T01:54:16.190851"
+    },
+    {
+      "role": "user",
+      "content": "ape je awak boleh buat?",
+      "timestamp": "2026-03-02T01:54:34.426259"
+    },
+    {
+      "role": "assistant",
+      "content": "Saya ni Macalah Receptionist AI untuk UiTM! 😄\n\nBoleh tolong bagi info:\n\n📋 **Pendaftaran & Admissions**\n- Syarat masuk\n- Tarikh penting\n- Cara memohon\n\n💰 **Yuran & Pembayaran**\n- Yuran pengajian\n- Cara bayar\n- Biasiswa & bantuan kewangan (PTPTN, MARA, JPA)\n\n🎓 **Program & Courses**\n- Diploma\n- Sarjana Muda\n- Postgraduate\n\n🏫 **Campus & Facilities**\n- Lokasi campus\n- Asrama\n- Aktiviti kokurikulum\n\n📞 **Hubungi**\n- Nombor telefon\n- Alamat pejabat\n\nApa yang nak tahu? Saya tolong! 😊",
+      "reasoning": "The user is asking what I can do. I should explain my role as a UiTM receptionist and what kind of information I can provide, in Malay.",
+      "timestamp": "2026-03-02T01:54:34.426259"
     }
   ]
 }

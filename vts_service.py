@@ -241,10 +241,10 @@ class LipSyncEngine:
     PARAM_NAME = "MouthOpen"
 
     def __init__(self,
-                 target_fps: int = 30,
-                 smoothing: float = 0.3,
-                 sensitivity: float = 3.0,
-                 min_threshold: float = 0.02):
+                 target_fps: int = 15,
+                 smoothing: float = 0.5,
+                 sensitivity: float = 2.5,
+                 min_threshold: float = 0.05):
         self.target_fps = target_fps
         self.smoothing = smoothing
         self.sensitivity = sensitivity
@@ -484,6 +484,61 @@ def vts_lip_sync(mp3_bytes: bytes):
     """
     if _manager:
         _manager.play_lip_sync(mp3_bytes)
+
+
+def get_lip_sync_frames(mp3_bytes: bytes) -> list:
+    """
+    Analyze MP3 audio and return lip sync frame data without playing.
+    
+    Returns a list of [timestamp, mouth_value] pairs that can be used
+    by the browser to drive synchronized lip movements.
+    
+    Args:
+        mp3_bytes: MP3 audio data as bytes
+        
+    Returns:
+        List of [timestamp_seconds, mouth_value] frames (JSON serializable)
+    """
+    if not PYDUB_AVAILABLE or not NUMPY_AVAILABLE:
+        logger.warning("[LipSync] pydub or numpy not installed, cannot analyze audio")
+        return []
+    
+    try:
+        engine = LipSyncEngine()
+        frames = engine.analyze_mp3(mp3_bytes)
+        # Convert to JSON-serializable format (list of lists instead of tuples)
+        return [[round(t, 3), round(v, 3)] for t, v in frames]
+    except Exception as e:
+        logger.error(f"[LipSync] Error analyzing audio for frames: {e}")
+        return []
+
+
+def vts_set_mouth(value: float) -> bool:
+    """
+    Set the mouth open value directly.
+    Used by browser-driven lip sync.
+    
+    Args:
+        value: Mouth open value (0.0 to 1.0)
+        
+    Returns:
+        True if successful, False otherwise
+    """
+    if not _manager or not _manager.is_ready:
+        return False
+    
+    try:
+        # Schedule the parameter update on the background event loop
+        if _manager._loop and _manager._loop.is_running():
+            asyncio.run_coroutine_threadsafe(
+                _manager.connector.set_parameter(LipSyncEngine.PARAM_NAME, float(value)),
+                _manager._loop
+            )
+            return True
+        return False
+    except Exception as e:
+        logger.error(f"[VTS] Error setting mouth value: {e}")
+        return False
 
 
 def shutdown_vts():

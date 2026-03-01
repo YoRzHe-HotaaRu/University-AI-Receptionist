@@ -26,7 +26,7 @@ mimetypes.add_type('application/json', '.json')
 mimetypes.add_type('image/svg+xml', '.svg')
 
 from rag import KnowledgeBase
-from vts_service import init_vts, vts_lip_sync, shutdown_vts
+from vts_service import init_vts, vts_lip_sync, shutdown_vts, get_lip_sync_frames, vts_set_mouth
 
 # Load environment variables from .env file
 from dotenv import load_dotenv
@@ -1072,13 +1072,30 @@ def tts():
         if not audio_data:
             return jsonify({'error': 'Failed to generate audio'}), 500
         
-        # Fire-and-forget lip sync to VTubeStudio (runs in background thread)
+        # Analyze audio for lip sync frames (for browser-driven sync)
+        lip_sync_frames = get_lip_sync_frames(audio_data)
+        
+        # Also fire-and-forget lip sync for backward compatibility
+        # This will be overridden if browser takes control
         vts_lip_sync(audio_data)
         
-        # Return audio file
+        # Return audio file with lip sync data in header
         response = make_response(audio_data)
         response.headers['Content-Type'] = 'audio/mpeg'
         response.headers['Content-Disposition'] = 'inline; filename=speech.mp3'
+        
+        # Include lip sync frame data as JSON header
+        # Format: [[timestamp, mouth_value], ...]
+        if lip_sync_frames:
+            import json
+            # Encode frames as JSON and add to custom header
+            # Use a compact JSON representation
+            frames_json = json.dumps(lip_sync_frames, separators=(',', ':'))
+            # Base64 encode to ensure header safety
+            import base64
+            frames_b64 = base64.b64encode(frames_json.encode()).decode()
+            response.headers['X-LipSync-Frames'] = frames_b64
+            response.headers['X-LipSync-Enabled'] = 'true'
         
         return response
         
@@ -1088,6 +1105,49 @@ def tts():
     except Exception as e:
         logger.error(f"TTS unexpected error: {e}")
         return jsonify({'error': f'Failed to generate audio: {str(e)}'}), 500
+
+
+@app.route('/api/vts/mouth', methods=['POST'])
+def set_vts_mouth():
+    """
+    Set the VTube Studio avatar mouth open value.
+    Used by browser-driven lip sync for perfect audio synchronization.
+    
+    Request JSON:
+        {
+            "value": 0.5  // Mouth open value 0.0-1.0
+        }
+        
+    Returns:
+        {
+            "success": true,
+            "vts_connected": true
+        }
+    """
+    try:
+        data = request.get_json()
+        
+        if data is None or 'value' not in data:
+            return jsonify({'error': 'Missing "value" field'}), 400
+        
+        value = float(data['value'])
+        
+        # Clamp value to valid range
+        value = max(0.0, min(1.0, value))
+        
+        # Set mouth value in VTS
+        success = vts_set_mouth(value)
+        
+        return jsonify({
+            'success': success,
+            'vts_connected': success
+        })
+        
+    except (ValueError, TypeError) as e:
+        return jsonify({'error': 'Invalid value - must be a number between 0 and 1'}), 400
+    except Exception as e:
+        logger.error(f"VTS mouth endpoint error: {e}")
+        return jsonify({'error': str(e)}), 500
 
 
 # ============================================================================
